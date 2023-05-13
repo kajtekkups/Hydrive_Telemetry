@@ -1,40 +1,6 @@
 import sys
-import pandas as pd
 from openpyxl import Workbook
 from openpyxl import load_workbook
-
-# filename = sys.argv[1]
-#nazwa, rozszerzenie = os.path.splitext(FileName)
-# excelName = nazwa
-
-
-czas = []
-pomiarVT_0 = []
-pomiarVT_1 = []
-pomiarI_0 = []
-pomiarI_1 = []
-
-czasSlowo = 'czas:'
-VT_0Slowo = 'pomiarVT_0:'
-VT_1Slowo = 'pomiarVT_1:'
-
-I_0Slowo = 'pomiarI_0:'
-I_1Slowo = 'pomiarI_1:'
-
-# tabele = [czas, pomiarVT_0, pomiarVT_1, pomiarI_0, pomiarI_1]
-# slowaKlucz = [czasSlowo, VT_0Slowo, VT_1Slowo, I_0Slowo, I_1Slowo]
-
-
-
-pomiarVT_2 = []
-pomiarI_2 = []
-VT_2Slowo = 'pomiarVT_2:'
-I_2Slowo = 'pomiarI_2:'
-tabele = [czas, pomiarVT_0, pomiarVT_1, pomiarI_0, pomiarI_1, pomiarVT_2, pomiarI_2]
-slowaKlucz = [czasSlowo, VT_0Slowo, VT_1Slowo, I_0Slowo, I_1Slowo, VT_2Slowo, I_2Slowo]
-
-
-
 
 def ReadValue(tekst, slowoKlucz):
     tekst = tekst.replace(" ", "")
@@ -84,8 +50,39 @@ def ColectData():
     for index in range(len(tabele)):
         saveInExcel(slowaKlucz[index], index+1, tabele[index])
 
-# slowaKlucz = [czasSlowo, VT_0Slowo, VT_1Slowo, I_0Slowo, I_1Slowo]
+if __name__ == "__main__":
+    # filename = sys.argv[1]
+    #nazwa, rozszerzenie = os.path.splitext(FileName)
+    # excelName = nazwa
 
-lines = open('Pomiary/HydrivePomiaryPradu_0.txt', 'r').readlines()
-ColectData()
+
+    czas = []
+    pomiarVT_0 = []
+    pomiarVT_1 = []
+    pomiarI_0 = []
+    pomiarI_1 = []
+
+    czasSlowo = 'czas:'
+    VT_0Slowo = 'pomiarVT_0:'
+    VT_1Slowo = 'pomiarVT_1:'
+
+    I_0Slowo = 'pomiarI_0:'
+    I_1Slowo = 'pomiarI_1:'
+
+    # tabele = [czas, pomiarVT_0, pomiarVT_1, pomiarI_0, pomiarI_1]
+    # slowaKlucz = [czasSlowo, VT_0Slowo, VT_1Slowo, I_0Slowo, I_1Slowo]
+
+
+
+    pomiarVT_2 = []
+    pomiarI_2 = []
+    VT_2Slowo = 'pomiarVT_2:'
+    I_2Slowo = 'pomiarI_2:'
+    tabele = [czas, pomiarVT_0, pomiarVT_1, pomiarI_0, pomiarI_1, pomiarVT_2, pomiarI_2]
+    slowaKlucz = [czasSlowo, VT_0Slowo, VT_1Slowo, I_0Slowo, I_1Slowo, VT_2Slowo, I_2Slowo]
+
+    # slowaKlucz = [czasSlowo, VT_0Slowo, VT_1Slowo, I_0Slowo, I_1Slowo]
+
+    lines = open('Pomiary/HydrivePomiaryPradu_0.txt', 'r').readlines()
+    ColectData()
 
