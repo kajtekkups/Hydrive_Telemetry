@@ -141,7 +141,7 @@ def handle_message(client, userdata, message):
 
     # dekodowanie i przetwarzanie danych z MQTT
     # wywołanie funkcji dla każdego wątku
-    saveInExcel(data)
+    # saveInExcel(data)
     google_thread(data)
 
 
