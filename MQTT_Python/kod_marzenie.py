@@ -71,7 +71,7 @@ def handle_message(client, userdata, message):
     global prosty_licznik
     global dane_do_wyslania
 
-    number_of_data_samples = 5
+    number_of_data_samples = 6
     if prosty_licznik == number_of_data_samples:
         try:
             google_sheet.wyslij_w_chmure(dane_do_wyslania)
@@ -90,4 +90,5 @@ if __name__ == "__main__":
     print("Message Sent")
 
     while True:
+
         pass
