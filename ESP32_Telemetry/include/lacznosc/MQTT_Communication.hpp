@@ -2,5 +2,4 @@
 #define MQTT_COMMUNICATION_HPP
 
     
-
 #endif
