@@ -1,20 +1,7 @@
-// WiFi conection
-#include "secrets.h"
-#include <WiFiClientSecure.h>
-#include <MQTTClient.h>
-#include <ArduinoJson.h>
-#include "WiFi.h"
-
-#include "lacznosc/MQTT_Communication.hpp"
-
-// Mesurment
 #include <Arduino.h>
-#include "pomiary/Adafruit_ADS1X15.h"
-
-
-// The MQTT topics that this device should publish/subscribe
-#define AWS_IOT_PUBLISH_TOPIC   "esp32/pub"
-#define AWS_IOT_SUBSCRIBE_TOPIC "esp32/sub"
+#include "Adafruit_ADS1X15.h"
+#include "pomiary_elektryczne.hpp"
+#include "MQTT_Communication.hpp"
 
 //leds variables
 #define ADS_LED 5
@@ -62,36 +49,6 @@ void connectAWS()
   }
 
   Serial.println("AWS IoT Connected!");
-}
-
-
-
-float CalculateAmp(float Measure){
-  float Amp; 
-
-  /* rozdzielczosc modulu pomiaru pradu wynosi 100A ( maks 50A, ale jest mozliwosc pomiaru -50 - 50 )
-  *  natomiast rozdzielczość ADC 2048, jednak nasze napiecie referencyjne to 5V a ADC mierzy 0-6,144V,
-  *  dlatego realna rozdzielczosc to 1666,67, co mozna policzyc z prostej proporcji:
-  * 
-  *             6,144 = 2048
-  *                5  =   x
-  * 
-  * Aby uzyskac poprawny wynik, zmierzone próbki [Measure] mnozymy przez wartosc jednej probki
-  */
-//   Amp =  (Measure) * (100 / 1666); 
-  // Amp = VoltMeasure * 20;
- 
-  Amp = (Measure - 833.3) * 5/1666.67 / 0.04 - 0.65;
-  return Amp; //amperomierz mierzy w zakresie -50 - 50 A, ale my liczymy wynik w zakresie 0 - 100
-  }
-
-
-float CalculateVolt_for_meter(float Measure){
-  float Volt;
-
-  Volt = Measure * 10;
-
-  return Volt;
 }
 
 
