@@ -1,6 +1,7 @@
 #ifndef ADC_HPP
 #define ADC_HPP
 
+
 /* rozdzielczosc modulu pomiaru pradu wynosi 100A natomiast rozdzielczość ADC 2048, 
 * jednak nasze napiecie referencyjne to 5V a ADC mierzy 0-6,144V,
 *  dlatego realna rozdzielczosc to 1666,67, co mozna policzyc z prostej proporcji:
