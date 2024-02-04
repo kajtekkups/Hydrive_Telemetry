@@ -6,7 +6,7 @@
 #include <PubSubClient.h>
 #include <ArduinoJson.h>
 #include "WiFi.h"
-
+#include "Pin_Defines.hpp"
 
 /******* WIFI credentials *******/
 #define WIFI_SSID "ESP32test"          
@@ -38,23 +38,7 @@ void MQTT_reconnect();
 
 
 /**** Method for Publishing MQTT Messages **********/
-void publish_message(const char* topic, String payload);
-// void publishMessage(float pomiarVT_0, float pomiarVT_1, float pomiarV_2, float pomiarI_0, float pomiarI_1, float pomiarI_2)
-// {
-//   StaticJsonDocument<200> doc;
-//   doc["time"] = millis();
-//   doc["pomiarVT_0"] = pomiarVT_0;
-//   doc["pomiarVT_1"] = pomiarVT_1;
-//   doc["pomiarV_2"] = pomiarV_2;
-//   doc["pomiarI_0"] = pomiarI_0;
-//   doc["pomiarI_1"] = pomiarI_1;
-//   doc["pomiarI_2"] = pomiarI_2;
-
-//   char jsonBuffer[256];
-//   serializeJson(doc, jsonBuffer); // print to client
-
-//   client.publish(AWS_IOT_PUBLISH_TOPIC, jsonBuffer);
-// }
+void publish_MQTT_message(const char* topic, String payload);
 
 
 /**** Method for initializing MQTT connection **********/

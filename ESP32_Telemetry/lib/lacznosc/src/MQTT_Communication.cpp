@@ -82,7 +82,7 @@ void MQTT_reconnect() {
 }
 
 
-void publish_message(const char* topic, String payload){
+void publish_MQTT_message(const char* topic, String payload){
   if (MQTT_client.publish(topic, payload.c_str(), true))
       Serial.println("Message publised ["+String(topic)+"]: "+payload);
 }
