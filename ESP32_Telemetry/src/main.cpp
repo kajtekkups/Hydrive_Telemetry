@@ -17,6 +17,7 @@ void setup() {
 void loop() {
 
   if (!MQTT_client.connected()) MQTT_reconnect(); // check if MQTT client is connected
+  //TODO: zrobic podobnie dla wifi
 
   Collect_electrical_data(); //zbierz pomiary ADC z czujnikow
   Send_electrical_data(); //wyslij pomiary na serwer

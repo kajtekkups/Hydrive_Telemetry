@@ -4,17 +4,24 @@
 #include <Arduino.h>
 #include "MQTT_Communication.hpp"
 #include "Adafruit_ADS1X15.h"
+#include "Pin_Defines.hpp"
 
 /**** stale zwiazane z pomiarami *****/
 #define ROZDZIELCZOSC_PRZETWORNIKA_ADC 1666.67 
 #define NAPIECIE_REFERENCYJNE 5
 #define ACS758_SENSITIVITY_DEFAULT 0.04  // wrazliwosc czujnika wyrazona w V/A
 #define BLAD_POMIARU 0.65
-#define LICZBA_POMIAROW 5
 
 /**** Analog Digital Converter modules *****/
-Adafruit_ADS1015 ads;
-Adafruit_ADS1015 ads1;
+#define LICZBA_POMIAROW 6
+#define LICZBA_PRZETWORNIKOW 2
+
+#define ADS_ADRESS_ZA_OGNIWEM 0x48 //Activate default ads (addr floating or gnd)
+#define ADS_ADRESS_PRZED_PRZETWORNICAMI 0x4a // Activate ads1 (addr to sda)
+#define ADS_ADRESS_ZA_PRZETWORNICAMI
+#define ADS_ADRESS_KONDENSATORY
+
+extern Adafruit_ADS1015 ads[LICZBA_PRZETWORNIKOW];
 
 struct {
   unsigned long time;
@@ -24,7 +31,14 @@ struct {
 } dane_elektryczne;
 
 
-/************* Inicjalizuje ADC lub zewnetrzne kontrolery ADC ***********/
+/************************
+ *  Inicjalizuje ADC lub zewnetrzne kontrolery ADC 
+ * 
+ *  Przetwornikow ADC na plytce ma byc 4, 
+ *  ale nie wszystkie musza dzialac na raz, brak 
+ *  jednego przetwornika nie wplywa na system
+ * 
+ ************************/
 void init_ADC();
 
 
