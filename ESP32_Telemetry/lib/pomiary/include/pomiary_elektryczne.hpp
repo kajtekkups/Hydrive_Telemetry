@@ -14,7 +14,7 @@
 
 /**** Analog Digital Converter modules *****/
 #define LICZBA_POMIAROW 6
-#define LICZBA_PRZETWORNIKOW 2
+#define LICZBA_PRZETWORNIKOW 4
 
 #define ADS_ADRESS_ZA_OGNIWEM 0x48 //Activate default ads (addr floating or gnd)
 #define ADS_ADRESS_PRZED_PRZETWORNICAMI 0x4a // Activate ads1 (addr to sda)
@@ -66,7 +66,7 @@ void Collect_electrical_data();
 
 
 /**** przesyla pomiary zapisane w strukturze dane_elektryczne *****/
-void Send_electrical_data();
+void Send_save_electrical_data();
 
 
 #endif

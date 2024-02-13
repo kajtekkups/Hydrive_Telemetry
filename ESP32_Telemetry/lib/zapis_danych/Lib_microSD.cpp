@@ -1,5 +1,5 @@
 #include "Lib_microSD.hpp"
-
+#include "Pin_Defines.hpp"
 
 void listDir(fs::FS &fs, const char * dirname, uint8_t levels){
   Serial.printf("Listing directory: %s\n", dirname);
@@ -123,12 +123,18 @@ void testFileIO(fs::FS &fs, const char * path){
 void init_micro_sd(){
 
   if(!SD.begin()){
+    pinMode(MICROSD_STATE_LED, OUTPUT);
+    digitalWrite(MICROSD_STATE_LED, HIGH);
+
     Serial.println("Card Mount Failed");
     return;
   }
   uint8_t cardType = SD.cardType();
 
   if(cardType == CARD_NONE){
+    pinMode(MICROSD_STATE_LED, OUTPUT);
+    digitalWrite(MICROSD_STATE_LED, HIGH);
+
     Serial.println("No SD card attached");
     return;
   }

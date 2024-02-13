@@ -3,20 +3,35 @@
 Adafruit_ADS1015 ads[LICZBA_PRZETWORNIKOW];
 
 
+class AdsNodeInterface{
+  public:
+    // zbierz pomiary i zwroc w kolejnosci napiecie - prad
+    void get_messurements(int16_t& voltage, int16_t& current){
+        voltage = _node_ads->readADC_SingleEnded(_voltage_pin);
+        current = _node_ads->readADC_SingleEnded(_current_pin);
+    }
+
+  private:
+    uint8_t _initialized;
+    Adafruit_ADS1015* _node_ads;
+    uint8_t _current_pin;
+    uint8_t _voltage_pin;
+};
+
 void init_ADC(){
 
   /******* aktywuj przetworniki ADC, jeżeli wystąpi problem, zasygnalizuj go diodą ******/
-  pinMode(ADC_LED_STATE, OUTPUT);
+  pinMode(ADC_STATE_LED, OUTPUT);
 
   if (!ads[0].begin(ADS_ADRESS_ZA_OGNIWEM)) {
     Serial.println("blad polaczenia z ADS 0");
-    digitalWrite(ADC_LED_STATE, HIGH);
+    digitalWrite(ADC_STATE_LED, HIGH);
   }
   
-  if (!ads[1].begin(ADS_ADRESS_PRZED_PRZETWORNICAMI)) {
-    Serial.println("blad polaczenia z ADS 1");
-    digitalWrite(ADC_LED_STATE, HIGH);
-  }
+  // if (!ads[1].begin(ADS_ADRESS_PRZED_PRZETWORNICAMI)) {
+  //   Serial.println("blad polaczenia z ADS 1");
+  //   digitalWrite(ADC_STATE_LED, HIGH);
+  // }
 
   // if (!ads[2].begin(ADS_ADRESS_ZA_PRZETWORNICAMI)) {
   //   Serial.println("blad polaczenia z ADS 2");
@@ -58,8 +73,8 @@ void Collect_electrical_data(){
 *  Piny pomiarowe, a dodatkowo mialaby uniwersalna metode odczytujaca wartosci
 *  z pinow. Ale to w przyszlosci
 */
-  int16_t results_vt;
-  int16_t results_I;
+  int16_t results_vt = 0;
+  int16_t results_I = 0;
 
   //first ads
   results_vt = ads[0].readADC_SingleEnded(ADS_0_VOLT);
@@ -68,22 +83,22 @@ void Collect_electrical_data(){
   dane_elektryczne.pomiar_I[0] = CalculateAmp(results_I);
 
   //second ads
-  results_vt = ads[1].readADC_SingleEnded(ADS_1_VOLT);  
-  results_I = ads[1].readADC_SingleEnded(ADS_1_CURRENT);
-  dane_elektryczne.pomiar_VT[1] = CalculateVolt_for_meter(ads[1].computeVolts(results_vt));
-  dane_elektryczne.pomiar_I[1] = CalculateAmp(results_I);
+  // results_vt = ads[1].readADC_SingleEnded(ADS_1_VOLT);  
+  // results_I = ads[1].readADC_SingleEnded(ADS_1_CURRENT);
+  // dane_elektryczne.pomiar_VT[1] = CalculateVolt_for_meter(ads[1].computeVolts(results_vt));
+  // dane_elektryczne.pomiar_I[1] = CalculateAmp(results_I);
 
-  //third ads
-  results_vt = ads[2].readADC_SingleEnded(ADS_2_VOLT);
-  results_I = ads[2].readADC_SingleEnded(ADS_2_CURRENT);
-  dane_elektryczne.pomiar_VT[2] = CalculateVolt_for_meter(ads[2].computeVolts(results_vt));
-  dane_elektryczne.pomiar_I[2] = CalculateAmp(results_I);
+  // //third ads
+  // results_vt = ads[2].readADC_SingleEnded(ADS_2_VOLT);
+  // results_I = ads[2].readADC_SingleEnded(ADS_2_CURRENT);
+  // dane_elektryczne.pomiar_VT[2] = CalculateVolt_for_meter(ads[2].computeVolts(results_vt));
+  // dane_elektryczne.pomiar_I[2] = CalculateAmp(results_I);
 
-  //fourth ads
-  results_vt = ads[3].readADC_SingleEnded(ADS_3_VOLT);
-  results_I = ads[3].readADC_SingleEnded(ADS_3_CURRENT);
-  dane_elektryczne.pomiar_VT[3] = CalculateVolt_for_meter(ads[3].computeVolts(results_vt));
-  dane_elektryczne.pomiar_I[3] = CalculateAmp(results_I);
+  // //fourth ads
+  // results_vt = ads[3].readADC_SingleEnded(ADS_3_VOLT);
+  // results_I = ads[3].readADC_SingleEnded(ADS_3_CURRENT);
+  // dane_elektryczne.pomiar_VT[3] = CalculateVolt_for_meter(ads[3].computeVolts(results_vt));
+  // dane_elektryczne.pomiar_I[3] = CalculateAmp(results_I);
   
   dane_elektryczne.time = millis();
 }

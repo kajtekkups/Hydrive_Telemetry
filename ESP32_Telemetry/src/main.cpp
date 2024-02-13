@@ -21,6 +21,6 @@ void loop() {
   //TODO: zrobic podobnie dla wifi
 
   Collect_electrical_data(); //zbierz pomiary ADC z czujnikow
-  Send_electrical_data(); //wyslij pomiary na serwer
+  Send_save_electrical_data(); //wyslij pomiary na serwer
   delay(3000);
 }
