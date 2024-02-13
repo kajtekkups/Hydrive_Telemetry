@@ -89,7 +89,7 @@ void Collect_electrical_data(){
 }
 
 
-void Send_electrical_data(){
+void Send_save_electrical_data(){
   StaticJsonDocument<300> doc;  // data is send in json format 
 
   // pobierz dane do zapisu
@@ -105,5 +105,4 @@ void Send_electrical_data(){
 
   //wyslij na serwer
   publish_MQTT_message(MQTT_PUBLISH_TOPIC, mqtt_message);
-
 }

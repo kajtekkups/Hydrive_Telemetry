@@ -1,17 +1,18 @@
 #include <Arduino.h>
 #include "pomiary_elektryczne.hpp"
 #include "MQTT_Communication.hpp"
-
+#include "Lib_microSD.hpp"
 
 void setup() {
   
-  //define ESP-PC wire communication
   Serial.begin(115200);
   Serial.println("PC Serial connection established");
 
   establish_mqtt_connection();
 
   init_ADC();
+
+  init_micro_sd();
 }
 
 void loop() {
