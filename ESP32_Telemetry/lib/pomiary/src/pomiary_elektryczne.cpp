@@ -5,10 +5,24 @@ Adafruit_ADS1015 ads[LICZBA_PRZETWORNIKOW];
 
 class AdsNodeInterface{
   public:
+
+    void begin(Adafruit_ADS1015* node_ads, uint8_t initialized, uint8_t current_pin, uint8_t voltage_pin){
+      _node_ads = node_ads; 
+      _initialized = initialized;
+      _current_pin = current_pin;
+      _voltage_pin = voltage_pin;
+    }
+
     // zbierz pomiary i zwroc w kolejnosci napiecie - prad
     void get_messurements(int16_t& voltage, int16_t& current){
+      if(_initialized){
         voltage = _node_ads->readADC_SingleEnded(_voltage_pin);
         current = _node_ads->readADC_SingleEnded(_current_pin);
+      }
+      else{
+        voltage = 0;
+        current = 0;
+      }
     }
 
   private:
@@ -17,6 +31,8 @@ class AdsNodeInterface{
     uint8_t _current_pin;
     uint8_t _voltage_pin;
 };
+AdsNodeInterface ads_nodes[LICZBA_PRZETWORNIKOW];
+
 
 void init_ADC(){
 
@@ -26,22 +42,38 @@ void init_ADC(){
   if (!ads[0].begin(ADS_ADRESS_ZA_OGNIWEM)) {
     Serial.println("blad polaczenia z ADS 0");
     digitalWrite(ADC_STATE_LED, HIGH);
+    ads_nodes[0].begin(&ads[0], 0, ADS_0_CURRENT, ADS_0_VOLT);
+  }
+  else{
+    ads_nodes[0].begin(&ads[0], 1, ADS_0_CURRENT, ADS_0_VOLT);
   }
   
-  // if (!ads[1].begin(ADS_ADRESS_PRZED_PRZETWORNICAMI)) {
-  //   Serial.println("blad polaczenia z ADS 1");
-  //   digitalWrite(ADC_STATE_LED, HIGH);
-  // }
+  if (!ads[1].begin(ADS_ADRESS_PRZED_PRZETWORNICAMI)) {
+    Serial.println("blad polaczenia z ADS 1");
+    digitalWrite(ADC_STATE_LED, HIGH);
+    ads_nodes[1].begin(&ads[1], 0, ADS_1_CURRENT, ADS_1_VOLT);
+  }
+  else{
+    ads_nodes[1].begin(&ads[1], 1, ADS_1_CURRENT, ADS_1_VOLT);
+  }
 
-  // if (!ads[2].begin(ADS_ADRESS_ZA_PRZETWORNICAMI)) {
-  //   Serial.println("blad polaczenia z ADS 2");
-  //   digitalWrite(ADC_LED_STATE, HIGH);
-  // }
+  if (!ads[2].begin(ADS_ADRESS_ZA_PRZETWORNICAMI)) {
+    Serial.println("blad polaczenia z ADS 2");
+    digitalWrite(ADC_STATE_LED, HIGH);
+    ads_nodes[2].begin(&ads[2], 0, ADS_2_CURRENT, ADS_2_VOLT);
+  }
+  else{
+    ads_nodes[2].begin(&ads[2], 1, ADS_2_CURRENT, ADS_2_VOLT);
+  }
 
-  // if(!ads[3].begin(ADS_ADRESS_KONDENSATORY)) {
-  //   Serial.println("blad polaczenia z ADS 3");
-  //   digitalWrite(ADC_LED_STATE, HIGH);
-  // }
+  if(!ads[3].begin(ADS_ADRESS_KONDENSATORY)) {
+    Serial.println("blad polaczenia z ADS 3");
+    digitalWrite(ADC_STATE_LED, HIGH);
+    ads_nodes[3].begin(&ads[3], 0, ADS_3_CURRENT, ADS_3_VOLT);
+  }
+  else{
+    ads_nodes[3].begin(&ads[3], 1, ADS_3_CURRENT, ADS_3_VOLT);
+  }
 }
 
 
@@ -73,39 +105,22 @@ void Collect_electrical_data(){
 *  Piny pomiarowe, a dodatkowo mialaby uniwersalna metode odczytujaca wartosci
 *  z pinow. Ale to w przyszlosci
 */
-  int16_t results_vt = 0;
-  int16_t results_I = 0;
 
-  //first ads
-  results_vt = ads[0].readADC_SingleEnded(ADS_0_VOLT);
-  results_I = ads[0].readADC_SingleEnded(ADS_0_CURRENT);
-  dane_elektryczne.pomiar_VT[0] = CalculateVolt_for_meter(ads[0].computeVolts(results_vt));
-  dane_elektryczne.pomiar_I[0] = CalculateAmp(results_I);
+  int16_t results_vt;
+  int16_t results_I;
 
-  //second ads
-  // results_vt = ads[1].readADC_SingleEnded(ADS_1_VOLT);  
-  // results_I = ads[1].readADC_SingleEnded(ADS_1_CURRENT);
-  // dane_elektryczne.pomiar_VT[1] = CalculateVolt_for_meter(ads[1].computeVolts(results_vt));
-  // dane_elektryczne.pomiar_I[1] = CalculateAmp(results_I);
-
-  // //third ads
-  // results_vt = ads[2].readADC_SingleEnded(ADS_2_VOLT);
-  // results_I = ads[2].readADC_SingleEnded(ADS_2_CURRENT);
-  // dane_elektryczne.pomiar_VT[2] = CalculateVolt_for_meter(ads[2].computeVolts(results_vt));
-  // dane_elektryczne.pomiar_I[2] = CalculateAmp(results_I);
-
-  // //fourth ads
-  // results_vt = ads[3].readADC_SingleEnded(ADS_3_VOLT);
-  // results_I = ads[3].readADC_SingleEnded(ADS_3_CURRENT);
-  // dane_elektryczne.pomiar_VT[3] = CalculateVolt_for_meter(ads[3].computeVolts(results_vt));
-  // dane_elektryczne.pomiar_I[3] = CalculateAmp(results_I);
+  for(uint8_t i = 0; i < LICZBA_PRZETWORNIKOW; i++){
+    ads_nodes[i].get_messurements(results_vt, results_I);
+    dane_elektryczne.pomiar_VT[i] = CalculateVolt_for_meter(ads[i].computeVolts(results_vt));
+    dane_elektryczne.pomiar_I[i] = CalculateAmp(results_I);  
+  }
   
   dane_elektryczne.time = millis();
 }
 
 
 void Send_save_electrical_data(){
-  StaticJsonDocument<300> doc;  // data is send in json format 
+  StaticJsonDocument<400> doc;  // data is send in json format 
 
   // pobierz dane do zapisu
   for(uint8_t i; i < LICZBA_POMIAROW; i++){
@@ -115,7 +130,7 @@ void Send_save_electrical_data(){
   doc["time_ms"] = dane_elektryczne.time;
 
   //konwertuj dane
-  char mqtt_message[200];
+  char mqtt_message[400];
   serializeJson(doc, mqtt_message);
 
   //wyslij na serwer

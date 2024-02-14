@@ -83,8 +83,13 @@ void MQTT_reconnect() {
 
 
 void publish_MQTT_message(const char* topic, String payload){
-  if (MQTT_client.publish(topic, payload.c_str(), true))
-      Serial.println("Message publised ["+String(topic)+"]: "+payload);
+  if (MQTT_client.publish(topic, payload.c_str(), true)){
+    Serial.println("Message publised ["+String(topic)+"]: "+payload);
+  }
+  else{
+    Serial.println("Failed to publish");
+  }
+    
 }
 
 
@@ -92,4 +97,5 @@ void establish_mqtt_connection(){
   setup_wifi();
   espClient.setCACert(root_ca);
   MQTT_client.setServer(mqtt_server, mqtt_port);
+  MQTT_client.setBufferSize(400);
 }
