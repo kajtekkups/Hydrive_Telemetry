@@ -93,11 +93,6 @@ float CalculateVolt_for_meter(float Measure){
 
 
 void Collect_electrical_data(){
-/* Docelowo stworzylbym klase, ktorej obiekty inicjalizowaloby sie w initADC
-*  klasa miala by pole Adafruit_ADS1015 ads; przy inicjalizacji podawalibysmy 
-*  Piny pomiarowe, a dodatkowo mialaby uniwersalna metode odczytujaca wartosci
-*  z pinow. Ale to w przyszlosci
-*/
 
   int16_t results_vt;
   int16_t results_I;

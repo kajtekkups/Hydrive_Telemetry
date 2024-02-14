@@ -13,13 +13,13 @@
 #define BLAD_POMIARU 0.65
 
 /**** Analog Digital Converter modules *****/
-#define LICZBA_PRZETWORNIKOW 4
+#define LICZBA_PRZETWORNIKOW 3
 #define LICZBA_POMIAROW (LICZBA_PRZETWORNIKOW * 2)
 
-#define ADS_ADRESS_ZA_OGNIWEM 0x48 //Activate default ads (addr floating or gnd)
-#define ADS_ADRESS_PRZED_PRZETWORNICAMI 0x4a // Activate ads1 (addr to sda)
-#define ADS_ADRESS_ZA_PRZETWORNICAMI
-#define ADS_ADRESS_KONDENSATORY
+#define ADS_ADRESS_ZA_OGNIWEM 0x48 // addr floating or gnd
+#define ADS_ADRESS_PRZED_PRZETWORNICAMI 0x4a //addr to sda
+#define ADS_ADRESS_ZA_PRZETWORNICAMI 0x49 // addr to vdd
+#define ADS_ADRESS_KONDENSATORY 0x4B // addr to scl
 
 extern Adafruit_ADS1015 ads[LICZBA_PRZETWORNIKOW];
 
