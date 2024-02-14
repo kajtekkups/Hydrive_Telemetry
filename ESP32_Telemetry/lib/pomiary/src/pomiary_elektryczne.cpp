@@ -1,36 +1,29 @@
 #include "pomiary_elektryczne.hpp"
 
+
+
+
+void AdsNodeInterface::begin(Adafruit_ADS1015* node_ads, uint8_t initialized, uint8_t current_pin, uint8_t voltage_pin){
+  _node_ads = node_ads; 
+  _initialized = initialized;
+  _current_pin = current_pin;
+  _voltage_pin = voltage_pin;
+}
+
+
+void AdsNodeInterface::get_messurements(int16_t& voltage, int16_t& current){
+  if(_initialized){
+    voltage = _node_ads->readADC_SingleEnded(_voltage_pin);
+    current = _node_ads->readADC_SingleEnded(_current_pin);
+  }
+  else{
+    voltage = 0;
+    current = 0;
+  }
+}
+
+// listy dostepnych przetwornikow ADS
 Adafruit_ADS1015 ads[LICZBA_PRZETWORNIKOW];
-
-
-class AdsNodeInterface{
-  public:
-
-    void begin(Adafruit_ADS1015* node_ads, uint8_t initialized, uint8_t current_pin, uint8_t voltage_pin){
-      _node_ads = node_ads; 
-      _initialized = initialized;
-      _current_pin = current_pin;
-      _voltage_pin = voltage_pin;
-    }
-
-    // zbierz pomiary i zwroc w kolejnosci napiecie - prad
-    void get_messurements(int16_t& voltage, int16_t& current){
-      if(_initialized){
-        voltage = _node_ads->readADC_SingleEnded(_voltage_pin);
-        current = _node_ads->readADC_SingleEnded(_current_pin);
-      }
-      else{
-        voltage = 0;
-        current = 0;
-      }
-    }
-
-  private:
-    uint8_t _initialized;
-    Adafruit_ADS1015* _node_ads;
-    uint8_t _current_pin;
-    uint8_t _voltage_pin;
-};
 AdsNodeInterface ads_nodes[LICZBA_PRZETWORNIKOW];
 
 

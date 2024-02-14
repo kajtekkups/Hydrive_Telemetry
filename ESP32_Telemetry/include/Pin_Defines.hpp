@@ -3,8 +3,8 @@
 
 
 /**** leds variables*****/ 
-#define WIFI_STATE_LED 39
-#define MQTT_STATE_LED 40
+#define WIFI_STATE_LED 39   //DONE
+#define MQTT_STATE_LED 40   //DONE
 #define ADC_STATE_LED 41    //DONE
 #define MICROSD_STATE_LED 42   //DONE
 

@@ -51,10 +51,13 @@ void setup_wifi() {
   WiFi.mode(WIFI_STA);
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
 
+  pinMode(WIFI_STATE_LED, OUTPUT);
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
+    digitalWrite(WIFI_STATE_LED, HIGH);
   }
+  
   randomSeed(micros());
   Serial.println("\nWiFi connected\nIP address: ");
   Serial.println(WiFi.localIP());
@@ -63,6 +66,8 @@ void setup_wifi() {
 
 void MQTT_reconnect() {
   // Loop until we're reconnected
+  pinMode(MQTT_STATE_LED, OUTPUT);
+
   while (!MQTT_client.connected()) {
     Serial.print("Attempting MQTT connection...");
     
@@ -73,6 +78,7 @@ void MQTT_reconnect() {
     if (MQTT_client.connect(clientId.c_str(), mqtt_username, mqtt_password)) {
       Serial.println("connected");
     } else {
+      digitalWrite(MQTT_STATE_LED, HIGH);
       Serial.print("failed, rc=");
       Serial.print(MQTT_client.state());
       Serial.println(" try again in 5 seconds");   // Wait 5 seconds before retrying

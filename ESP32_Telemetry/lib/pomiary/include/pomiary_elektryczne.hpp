@@ -31,6 +31,22 @@ struct {
 } dane_elektryczne;
 
 
+class AdsNodeInterface{
+  public:
+
+    void begin(Adafruit_ADS1015* node_ads, uint8_t initialized, uint8_t current_pin, uint8_t voltage_pin);
+
+    // zbierz pomiary i zwroc w kolejnosci napiecie - prad
+    void get_messurements(int16_t& voltage, int16_t& current);
+
+  private:
+    uint8_t _initialized;
+    Adafruit_ADS1015* _node_ads;
+    uint8_t _current_pin;
+    uint8_t _voltage_pin;
+};
+
+
 /************************
  *  Inicjalizuje ADC lub zewnetrzne kontrolery ADC 
  * 
