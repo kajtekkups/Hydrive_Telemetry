@@ -13,7 +13,7 @@
 #define BLAD_POMIARU 0.65
 
 /**** Analog Digital Converter modules *****/
-#define LICZBA_PRZETWORNIKOW 3
+#define LICZBA_PRZETWORNIKOW 1
 #define LICZBA_POMIAROW (LICZBA_PRZETWORNIKOW * 2)
 
 #define ADS_ADRESS_ZA_OGNIWEM 0x48 // addr floating or gnd
