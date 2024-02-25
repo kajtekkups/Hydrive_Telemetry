@@ -4,6 +4,7 @@ HallSensor::HallSensor() {}
 
 void HallSensor::addRotationSensor() {
     rotationsSensor1++;
+    rotationsSensor2++;
 }
 
 void HallSensor::calculateVelocity() {
@@ -41,6 +42,6 @@ void HallSensor::setup() {
 
 void HallSensor::loop() {
     calculateVelocity();
-    // wyświetlanie na ekranie bolidu
+    // wyświetlanie na ekranie bolidu - miejsce na kod
     delay(10);
 }
