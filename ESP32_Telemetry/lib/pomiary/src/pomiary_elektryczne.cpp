@@ -1,8 +1,6 @@
 #include "pomiary_elektryczne.hpp"
 
 
-
-
 void AdsNodeInterface::begin(Adafruit_ADS1015* node_ads, uint8_t initialized, uint8_t current_pin, uint8_t voltage_pin){
   _node_ads = node_ads; 
   _initialized = initialized;
@@ -25,7 +23,6 @@ void AdsNodeInterface::get_messurements(int16_t& voltage, int16_t& current){
 // listy dostepnych przetwornikow ADS
 Adafruit_ADS1015 ads[LICZBA_PRZETWORNIKOW];
 AdsNodeInterface ads_nodes[LICZBA_PRZETWORNIKOW];
-
 
 void init_ADC(){
 
@@ -70,20 +67,20 @@ void init_ADC(){
 }
 
 
-float CalculateAmp(float Measure){
-  float Amp; 
+float CalculateAmp(float Measure_VT){
   
-  //amperomierz mierzy w zakresie -50 - 50 A, ale my liczymy wynik w zakresie 0 - 100
-  float pomiar_znormalizowany = Measure - (ROZDZIELCZOSC_PRZETWORNIKA_ADC/2);  // czujnik mierzy w zakresie -50 - 50 (rozdzielczosc 1666,6)
-  float rozdzielczosc_bitu = NAPIECIE_REFERENCYJNE/ROZDZIELCZOSC_PRZETWORNIKA_ADC;  // rozdzielczosc JEDNEGO bitu przetwornika ADC 
+  //amperomierz mierzy w zakresie -50 --- 50 A
+  // 0A odpowiada połowie napięcia zasilającego przetwornik ADC (dla 5V będzie to 2.5V)
 
-  Amp = (pomiar_znormalizowany * rozdzielczosc_bitu) / ACS758_SENSITIVITY_DEFAULT - BLAD_POMIARU;
+  float pomiar_znormalizowany = Measure_VT - (NAPIECIE_REFERENCYJNE/2); 
+
+  float Amp = pomiar_znormalizowany / ACS758_SENSITIVITY_DEFAULT - BLAD_POMIARU;
   
   return Amp; 
   }
 
 
-float CalculateVolt_for_meter(float Measure){
+float CalculateVolt(float Measure){
   float Volt;
 
   Volt = Measure * 10;
@@ -98,9 +95,11 @@ void Collect_electrical_data(){
   int16_t results_I;
 
   for(uint8_t i = 0; i < LICZBA_PRZETWORNIKOW; i++){
+    
     ads_nodes[i].get_messurements(results_vt, results_I);
-    dane_elektryczne.pomiar_VT[i] = CalculateVolt_for_meter(ads[i].computeVolts(results_vt));
-    dane_elektryczne.pomiar_I[i] = CalculateAmp(results_I);  
+    
+    dane_elektryczne.pomiar_VT[i] = CalculateVolt(ads[i].computeVolts(results_vt));
+    dane_elektryczne.pomiar_I[i] = CalculateAmp(ads[i].computeVolts(results_I));  
   }
   
   dane_elektryczne.time = millis();
@@ -111,7 +110,7 @@ void Send_save_electrical_data(){
   StaticJsonDocument<400> doc;  // data is send in json format 
 
   // pobierz dane do zapisu
-  for(uint8_t i; i < LICZBA_POMIAROW; i++){
+  for(uint8_t i; i < LICZBA_PRZETWORNIKOW; i++){
     doc["pomiar_VT" + std::to_string(i)] = dane_elektryczne.pomiar_VT[i]; //zapisz napiecie
     doc["pomiar_I" + std::to_string(i)] = dane_elektryczne.pomiar_I[i]; //zapisz natezenie
   }
