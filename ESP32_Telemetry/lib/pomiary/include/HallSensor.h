@@ -3,9 +3,9 @@
 
 #include <Arduino.h>
 
-#define VELOCITY_MEASURE_PIN_1 2
-#define VELOCITY_MEASURE_PIN_2 4
-#define WHEEL_DIAMETER 260.0 // srednica kola w mm (zmierzyc musze)
+#define VELOCITY_MEASURE_PIN_1 21
+#define VELOCITY_MEASURE_PIN_2 22
+#define WHEEL_DIAMETER 460.0 // srednica kola w mm (zmierzyc musze)
 
 class HallSensor {
 public:
