@@ -8,8 +8,8 @@
 #define ADC_STATE_LED 9    //DONE
 #define MICROSD_STATE_LED 8   //DONE
 
-#define ADS_0_VOLT 0
-#define ADS_0_CURRENT 1
+#define ADS_0_VOLT 1
+#define ADS_0_CURRENT 0
 
 #define ADS_1_VOLT 0
 #define ADS_1_CURRENT 1
