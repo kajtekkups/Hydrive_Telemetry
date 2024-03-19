@@ -8,19 +8,23 @@ void setup() {
   Serial.begin(9600);
   Serial.println("PC Serial connection established");
 
-  establish_mqtt_connection();
+  // establish_mqtt_connection();
 
-  init_ADC();
+  // init_ADC();
 
-  // init_micro_sd();
+  micro_sd_file.begin();
 }
 
 void loop() {
 
-  if (!MQTT_client.connected()) MQTT_reconnect(); // check if MQTT client is connected
+  // if (!MQTT_client.connected()) MQTT_reconnect(); // check if MQTT client is connected
   //TODO: zrobic podobnie dla wifi
-  
-  Collect_electrical_data(); //zbierz pomiary ADC z czujnikow
-  Send_save_electrical_data(); //wyslij pomiary na serwer
+
+  unsigned long start = millis();
+  micro_sd_file.appendFile("test");
+  unsigned long stop = millis() - start;
+  Serial.println(stop);
+  // Collect_electrical_data(); //zbierz pomiary ADC z czujnikow
+  // Send_save_electrical_data(); //wyslij pomiary na serwer
   delay(3000);
 }

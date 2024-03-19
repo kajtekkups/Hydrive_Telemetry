@@ -4,27 +4,82 @@
 #include "FS.h"
 #include "SD.h"
 #include "SPI.h"
+#include "Pin_Defines.hpp"
 
 
-void listDir(fs::FS &fs, const char * dirname, uint8_t levels);
+class SdFileSystem{
+public:
+
+  void begin(){
+    if(!SD.begin()){
+      pinMode(MICROSD_STATE_LED, OUTPUT);
+      digitalWrite(MICROSD_STATE_LED, HIGH);
+
+      Serial.println("Card Mount Failed");
+      return;
+    }
+    uint8_t cardType = SD.cardType();
+
+    if(cardType == CARD_NONE){
+      pinMode(MICROSD_STATE_LED, OUTPUT);
+      digitalWrite(MICROSD_STATE_LED, HIGH);
+
+      Serial.println("No SD card attached");
+      return;
+    }
+    
+    uint8_t i = 0;
+    std::string file_path_temporary = "/pomiary_0.txt";
+    
+    while (SD.exists(file_path_temporary.c_str()))
+    {
+      i++;
+      file_path_temporary = "/pomiary_" + std::to_string(i) + ".txt";
+    }
+    
+    file_path = file_path_temporary;
+    writeFile("test"); 
+  }
 
 
-void createDir(fs::FS &fs, const char * path);
+  void writeFile(const char * message){
+
+    File file = SD.open(file_path.c_str(), FILE_WRITE);
+    if(!file){
+      Serial.println("Failed to open file for writing");
+      return;
+    }
+    if(file.print(message)){
+      Serial.println("File written");
+    } else {
+      Serial.println("Write failed");
+    }
+    file.close();
+  }
 
 
-/******* nadpisz/stworz plik *******/
-void writeFile(fs::FS &fs, const char * path, const char * message);
+  void appendFile(const char * message){
+
+    File file = SD.open(file_path.c_str(), FILE_APPEND);
+    if(!file){
+      Serial.println("Failed to open file for appending");
+      return;
+    }
+    if(file.print(message)){
+        Serial.println("Message appended on sd card \n\r");
+    } else {
+      Serial.println("Append failed");
+    }
+    file.close();
+  }
 
 
-/******* dodaj conetent do pliku *******/
-void appendFile(fs::FS &fs, const char * path, const char * message);
+private:
+  std::string file_path;
 
+};
 
-/******* Sprawadza czas odczytu danych z danej ścieżki *******/
-void testFileIO(fs::FS &fs, const char * path);
-
-
-void init_micro_sd();
+extern SdFileSystem micro_sd_file;
 
 
 #endif //LIB_MICROSD_HPP
