@@ -2,6 +2,7 @@
 #include "pomiary_elektryczne.hpp"
 #include "MQTT_Communication.hpp"
 #include "Lib_microSD.hpp"
+#include "SerialReceiver.hpp"
 
 void setup() {
   
@@ -22,5 +23,7 @@ void loop() {
   
   Collect_electrical_data(); //zbierz pomiary ADC z czujnikow
   Send_save_electrical_data(); //wyslij pomiary na serwer
+  receiveData();
+  
   delay(3000);
 }
