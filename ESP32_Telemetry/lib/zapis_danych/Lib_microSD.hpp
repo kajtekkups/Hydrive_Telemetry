@@ -11,7 +11,7 @@ class SdFileSystem{
 public:
 
   void begin(){
-    if(!SD.begin()){
+    if(!SD.begin(0)){
       pinMode(MICROSD_STATE_LED, OUTPUT);
       digitalWrite(MICROSD_STATE_LED, HIGH);
 
