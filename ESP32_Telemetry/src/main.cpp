@@ -1,7 +1,10 @@
 #include <Arduino.h>
+#include "HallSensor.h"
 #include "pomiary_elektryczne.hpp"
 #include "MQTT_Communication.hpp"
 #include "Lib_microSD.hpp"
+
+HallSensor hallSensorInstance;
 
 void setup() {
   
@@ -12,7 +15,8 @@ void setup() {
 
   init_ADC();
 
-  // init_micro_sd();
+  init_micro_sd();
+  hallSensorInstance.setup();
 }
 
 void loop() {
@@ -22,5 +26,8 @@ void loop() {
   
   Collect_electrical_data(); //zbierz pomiary ADC z czujnikow
   Send_save_electrical_data(); //wyslij pomiary na serwer
+
+  hallSensorInstance.loop();
+
   delay(3000);
 }
