@@ -1,5 +1,10 @@
 #include "HallSensor.h"
 
+HallSensor hallSensorInstance;
+
+volatile long HallSensor::rotationsSensor1 = 0;
+volatile long HallSensor::rotationsSensor2 = 0;
+
 HallSensor::HallSensor() {}
 
 void HallSensor::addRotationSensor() {
@@ -34,8 +39,6 @@ void HallSensor::setup() {
     attachInterrupt(digitalPinToInterrupt(VELOCITY_MEASURE_PIN_1), addRotationSensor, RISING);
     attachInterrupt(digitalPinToInterrupt(VELOCITY_MEASURE_PIN_2), addRotationSensor, RISING);
 
-    rotationsSensor1 = 0;
-    rotationsSensor2 = 0;
     lastVelocityMeasure = 0;
     measureTime = 1000;
 }

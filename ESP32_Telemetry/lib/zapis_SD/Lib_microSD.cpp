@@ -1,16 +1,9 @@
-#ifndef LIB_MICROSD_HPP
-#define LIB_MICROSD_HPP
-
-#include "FS.h"
-#include "SD.h"
-#include "SPI.h"
+#include "Lib_microSD.hpp"
 #include "Pin_Defines.hpp"
 
+SdFileSystem micro_sd_file;
 
-class SdFileSystem{
-public:
-
-  void begin(){
+void SdFileSystem::begin(){
     if(!SD.begin(0)){
       pinMode(MICROSD_STATE_LED, OUTPUT);
       digitalWrite(MICROSD_STATE_LED, HIGH);
@@ -38,11 +31,10 @@ public:
     }
     
     file_path = file_path_temporary;
-    writeFile("test"); 
   }
 
 
-  void writeFile(const char * message){
+void SdFileSystem::writeFile(const char * message){
 
     File file = SD.open(file_path.c_str(), FILE_WRITE);
     if(!file){
@@ -58,7 +50,7 @@ public:
   }
 
 
-  void appendFile(const char * message){
+void SdFileSystem::appendFile(const char * message){
 
     File file = SD.open(file_path.c_str(), FILE_APPEND);
     if(!file){
@@ -72,14 +64,3 @@ public:
     }
     file.close();
   }
-
-
-private:
-  std::string file_path;
-
-};
-
-extern SdFileSystem micro_sd_file;
-
-
-#endif //LIB_MICROSD_HPP

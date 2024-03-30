@@ -20,15 +20,6 @@
 #define ADS_ADRESS_ZA_PRZETWORNICAMI 0x49 // addr to vdd
 #define ADS_ADRESS_KONDENSATORY 0x4B // addr to scl
 
-extern Adafruit_ADS1015 ads[LICZBA_PRZETWORNIKOW];
-
-struct {
-  unsigned long time;
-  float pomiar_VT[LICZBA_PRZETWORNIKOW];
-  float pomiar_I[LICZBA_PRZETWORNIKOW];
-
-} dane_elektryczne;
-
 
 class AdsNodeInterface{
   public:
@@ -44,6 +35,9 @@ class AdsNodeInterface{
     uint8_t _current_pin;
     uint8_t _voltage_pin;
 };
+
+extern Adafruit_ADS1015 ads[LICZBA_PRZETWORNIKOW];
+extern AdsNodeInterface ads_nodes[LICZBA_PRZETWORNIKOW];
 
 
 /************************
@@ -75,13 +69,6 @@ float CalculateAmp(float Measure);
 *************************/
 float CalculateVolt(float Measure);
  
-
-/**** zbiera pomiary i zapisuje je w strukturze dane_elektryczne *****/
-void Collect_electrical_data();
-
-
-/**** przesyla pomiary zapisane w strukturze dane_elektryczne *****/
-void Send_save_electrical_data();
 
 
 #endif
