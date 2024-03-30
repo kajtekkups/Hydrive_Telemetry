@@ -7,14 +7,13 @@
 #include "Pin_Defines.hpp"
 
 /**** stale zwiazane z pomiarami *****/
-#define ROZDZIELCZOSC_PRZETWORNIKA_ADC 1666.67 
 #define NAPIECIE_REFERENCYJNE 5
 #define ACS758_SENSITIVITY_DEFAULT 0.04  // wrazliwosc czujnika wyrazona w V/A
 #define BLAD_POMIARU 0.65
 
 /**** Analog Digital Converter modules *****/
-#define LICZBA_PRZETWORNIKOW 3
-#define LICZBA_POMIAROW (LICZBA_PRZETWORNIKOW * 2)
+#define LICZBA_PRZETWORNIKOW 4  //przy zmianie liczby przetwornikow nalezy zmienic funkcje init_ADC
+
 
 #define ADS_ADRESS_ZA_OGNIWEM 0x48 // addr floating or gnd
 #define ADS_ADRESS_PRZED_PRZETWORNICAMI 0x4a //addr to sda
@@ -25,8 +24,8 @@ extern Adafruit_ADS1015 ads[LICZBA_PRZETWORNIKOW];
 
 struct {
   unsigned long time;
-  float pomiar_VT[LICZBA_POMIAROW];
-  float pomiar_I[LICZBA_POMIAROW];
+  float pomiar_VT[LICZBA_PRZETWORNIKOW];
+  float pomiar_I[LICZBA_PRZETWORNIKOW];
 
 } dane_elektryczne;
 
@@ -74,7 +73,7 @@ float CalculateAmp(float Measure);
  * przelicza wartosc otrzymana z przetwornika 
  * na zmierzone napiecie, dla przetwornika Grove 5/43 V
 *************************/
-float CalculateVolt_for_meter(float Measure);
+float CalculateVolt(float Measure);
  
 
 /**** zbiera pomiary i zapisuje je w strukturze dane_elektryczne *****/
