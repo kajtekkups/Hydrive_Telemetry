@@ -4,27 +4,24 @@
 #include "FS.h"
 #include "SD.h"
 #include "SPI.h"
+#include "Pin_Defines.hpp"
 
 
-void listDir(fs::FS &fs, const char * dirname, uint8_t levels);
+class SdFileSystem{
+public:
+  void begin();
+
+  void writeFile(const char * message);
+
+  void appendFile(const char * message);
 
 
-void createDir(fs::FS &fs, const char * path);
+private:
+  std::string file_path;
 
+};
 
-/******* nadpisz/stworz plik *******/
-void writeFile(fs::FS &fs, const char * path, const char * message);
-
-
-/******* dodaj conetent do pliku *******/
-void appendFile(fs::FS &fs, const char * path, const char * message);
-
-
-/******* Sprawadza czas odczytu danych z danej ścieżki *******/
-void testFileIO(fs::FS &fs, const char * path);
-
-
-void init_micro_sd();
+extern SdFileSystem micro_sd_file;
 
 
 #endif //LIB_MICROSD_HPP

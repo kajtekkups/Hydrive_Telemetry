@@ -44,13 +44,16 @@ void Send_save_data(){
   // zapisz czas
   doc["time_ms"] = dane_pomiarowe.time;
 
+
   //konwertuj dane
-  char mqtt_message[400];
-  serializeJson(doc, mqtt_message);
+  char package[400];
+  serializeJson(doc, package);
+
 
   // zapisz na karcie
-    
+  micro_sd_file.appendFile(package);
+
 
   //wyslij na serwer
-  publish_MQTT_message(MQTT_PUBLISH_TOPIC, mqtt_message);
+  publish_MQTT_message(MQTT_PUBLISH_TOPIC, package);
 }

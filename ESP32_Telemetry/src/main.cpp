@@ -17,11 +17,12 @@ void setup() {
 
   hallSensorInstance.setup();
 
-  init_micro_sd();
+  micro_sd_file.begin();
 }
 
 void loop() {
 
+  //sprawic, zeby nie blokowalo
   if (!MQTT_client.connected()) MQTT_reconnect(); // check if MQTT client is connected
   //TODO: zrobic podobnie dla wifi
   

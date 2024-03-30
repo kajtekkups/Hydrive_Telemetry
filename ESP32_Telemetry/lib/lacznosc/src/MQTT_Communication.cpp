@@ -52,15 +52,26 @@ void setup_wifi() {
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
 
   pinMode(WIFI_STATE_LED, OUTPUT);
+  uint8_t tries = 0;
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
     digitalWrite(WIFI_STATE_LED, HIGH);
+    if(tries > 10){ 
+      break;
+    }
+    tries++;
   }
   
-  randomSeed(micros());
-  Serial.println("\nWiFi connected\nIP address: ");
-  Serial.println(WiFi.localIP());
+  if(tries > 10){ 
+    Serial.println("\n couldn't connect to wifi \n");
+  }
+  else{
+    randomSeed(micros());
+    digitalWrite(WIFI_STATE_LED, LOW);
+    Serial.println("\nWiFi connected\nIP address: ");
+    Serial.println(WiFi.localIP());
+  }
 }
 
 
@@ -93,7 +104,7 @@ void publish_MQTT_message(const char* topic, String payload){
     Serial.println("Message publised ["+String(topic)+"]: "+payload);
   }
   else{
-    Serial.println("Failed to publish");
+    Serial.println("Failed to publish MQTT message");
   }
     
 }
