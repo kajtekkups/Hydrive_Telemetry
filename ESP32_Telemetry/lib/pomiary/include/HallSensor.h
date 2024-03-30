@@ -19,11 +19,13 @@ private:
     static void addRotationSensor();
     void calculateVelocity();
 
-    volatile long rotationsSensor1;
-    volatile long rotationsSensor2;
+    static volatile long rotationsSensor1;
+    static volatile long rotationsSensor2;
 
     unsigned long lastVelocityMeasure;
     unsigned long measureTime;
 };
+
+extern HallSensor hallSensorInstance;
 
 #endif

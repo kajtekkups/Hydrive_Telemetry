@@ -4,7 +4,7 @@
 #include "MQTT_Communication.hpp"
 #include "Lib_microSD.hpp"
 
-HallSensor hallSensorInstance;
+#include "obsluga_danych.hpp"
 
 void setup() {
   
@@ -15,8 +15,9 @@ void setup() {
 
   init_ADC();
 
-  init_micro_sd();
   hallSensorInstance.setup();
+
+  init_micro_sd();
 }
 
 void loop() {
@@ -24,8 +25,8 @@ void loop() {
   if (!MQTT_client.connected()) MQTT_reconnect(); // check if MQTT client is connected
   //TODO: zrobic podobnie dla wifi
   
-  Collect_electrical_data(); //zbierz pomiary ADC z czujnikow
-  Send_save_electrical_data(); //wyslij pomiary na serwer
+  Collect_data(); //zbierz pomiary 
+  Send_save_data(); //wyslij pomiary na serwer
 
   hallSensorInstance.loop();
 

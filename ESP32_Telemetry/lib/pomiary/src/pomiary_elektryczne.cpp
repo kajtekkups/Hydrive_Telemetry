@@ -88,38 +88,3 @@ float CalculateVolt(float Measure){
   return Volt;
 }
 
-
-void Collect_electrical_data(){
-
-  int16_t results_vt;
-  int16_t results_I;
-
-  for(uint8_t i = 0; i < LICZBA_PRZETWORNIKOW; i++){
-    
-    ads_nodes[i].get_messurements(results_vt, results_I);
-    
-    dane_elektryczne.pomiar_VT[i] = CalculateVolt(ads[i].computeVolts(results_vt));
-    dane_elektryczne.pomiar_I[i] = CalculateAmp(ads[i].computeVolts(results_I));  
-  }
-  
-  dane_elektryczne.time = millis();
-}
-
-
-void Send_save_electrical_data(){
-  StaticJsonDocument<400> doc;  // data is send in json format 
-
-  // pobierz dane do zapisu
-  for(uint8_t i; i < LICZBA_PRZETWORNIKOW; i++){
-    doc["pomiar_VT" + std::to_string(i)] = dane_elektryczne.pomiar_VT[i]; //zapisz napiecie
-    doc["pomiar_I" + std::to_string(i)] = dane_elektryczne.pomiar_I[i]; //zapisz natezenie
-  }
-  doc["time_ms"] = dane_elektryczne.time;
-
-  //konwertuj dane
-  char mqtt_message[400];
-  serializeJson(doc, mqtt_message);
-
-  //wyslij na serwer
-  publish_MQTT_message(MQTT_PUBLISH_TOPIC, mqtt_message);
-}
