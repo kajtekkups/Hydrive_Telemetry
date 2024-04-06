@@ -11,20 +11,25 @@ void HallSensor::calculateVelocity() {
     unsigned long currentTime = millis();
 
     if (lastVelocityMeasure + measureTime < currentTime) {
-        float velocity1Local = (rotationsSensor1 * WHEEL_DIAMETER) / (currentTime - lastVelocityMeasure);
-        float velocity2Local = (rotationsSensor2 * WHEEL_DIAMETER) / (currentTime - lastVelocityMeasure);
+        // Przeliczenie średnicy koła z mm na metry
+        float wheelDiameterMeters = WHEEL_DIAMETER / 1000.0;
+
+        // Obliczenie obwodu koła w metrach
+        float wheelCircumference = wheelDiameterMeters * PI;
+
+        // Obliczenie prędkości w metrach na sekundę dla każdego czujnika
+        float velocity1Local = (rotationsSensor1 * wheelCircumference) / (currentTime - lastVelocityMeasure);
+        float velocity2Local = (rotationsSensor2 * wheelCircumference) / (currentTime - lastVelocityMeasure);
+
         lastVelocityMeasure = currentTime;
         rotationsSensor1 = 0;
         rotationsSensor2 = 0;
 
-        if (fabs(velocity1Local) > 0.01 && fabs(velocity2Local) > 0.01) {
-            float averageVelocity = (velocity1Local + velocity2Local) / 2;
-            currentVelocity = averageVelocity;
-        } else if (fabs(velocity1Local) > 0.01) {
-            currentVelocity = velocity1Local;
-        } else if (fabs(velocity2Local) > 0.01) {
-            currentVelocity = velocity2Local;
-        }
+        // Obliczenie średniej prędkości
+        float averageVelocity = (velocity1Local + velocity2Local) / 2;
+
+        // Przeliczenie prędkości z m/s na km/h
+        currentVelocity = averageVelocity * 3.6; // 1 m/s = 3.6 km/h
     }
 }
 
@@ -42,6 +47,5 @@ void HallSensor::setup() {
 
 void HallSensor::loop() {
     calculateVelocity();
-    // wyświetlanie na ekranie bolidu - miejsce na kod
     delay(10);
 }

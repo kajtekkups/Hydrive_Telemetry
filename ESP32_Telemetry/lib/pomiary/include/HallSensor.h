@@ -5,7 +5,7 @@
 
 #define VELOCITY_MEASURE_PIN_1 21
 #define VELOCITY_MEASURE_PIN_2 22
-#define WHEEL_DIAMETER 460.0 // srednica kola w mm (zmierzyc musze)
+#define WHEEL_DIAMETER 457.2 //18 cali
 
 class HallSensor {
 public:
