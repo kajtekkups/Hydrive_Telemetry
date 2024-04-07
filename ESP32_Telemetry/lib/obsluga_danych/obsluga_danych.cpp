@@ -51,8 +51,10 @@ void Send_save_data(){
 
 
   // zapisz na karcie
-  micro_sd_file.appendFile(package);
-
+  uint8_t cardType = SD.cardType();
+  if(cardType != CARD_NONE){
+    micro_sd_file.appendFile(package);
+  }
 
   //wyslij na serwer
   publish_MQTT_message(MQTT_PUBLISH_TOPIC, package);

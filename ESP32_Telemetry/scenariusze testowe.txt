@@ -1,0 +1,5 @@
+begin: Połączenie z wifi - rozłączenie z wifi w trakcie trwania przejazdu: czy ponownie nawiąże połączenie, czy bedzie zapisywalo na karcie SD
+begin: brak karty SD
+begin: brak połączenia wifi: bedzie zapisywalo na karcie SD
+begin: brak połączenia wifi: pozniej laczy sie z wifi
+Utrata połączenia z ads
