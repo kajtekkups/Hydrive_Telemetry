@@ -13,16 +13,21 @@ public:
     void setup();
     void loop();
 
-    float currentVelocity;
+    float currentVelocity1;
+    float currentVelocity2;
+
 
 private:
     static void addRotationSensor();
-    void calculateVelocity();
+    void calculateVelocity1();
+    void calculateVelocity2();
+
 
     volatile long rotationsSensor1;
     volatile long rotationsSensor2;
 
-    unsigned long lastVelocityMeasure;
+    unsigned long lastVelocityMeasure1;
+    unsigned long lastVelocityMeasure2;
     unsigned long measureTime;
 };
 

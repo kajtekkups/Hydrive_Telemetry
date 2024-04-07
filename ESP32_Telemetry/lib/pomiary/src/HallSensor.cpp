@@ -7,29 +7,27 @@ void HallSensor::addRotationSensor() {
     rotationsSensor2++;
 }
 
-void HallSensor::calculateVelocity() {
+void HallSensor::calculateVelocity1() {
     unsigned long currentTime = millis();
 
-    if (lastVelocityMeasure + measureTime < currentTime) {
-        // Przeliczenie średnicy koła z mm na metry
+    if (lastVelocityMeasure1 + measureTime < currentTime) {
         float wheelDiameterMeters = WHEEL_DIAMETER / 1000.0;
-
-        // Obliczenie obwodu koła w metrach
         float wheelCircumference = wheelDiameterMeters * PI;
-
-        // Obliczenie prędkości w metrach na sekundę dla każdego czujnika
-        float velocity1Local = (rotationsSensor1 * wheelCircumference) / (currentTime - lastVelocityMeasure);
-        float velocity2Local = (rotationsSensor2 * wheelCircumference) / (currentTime - lastVelocityMeasure);
-
-        lastVelocityMeasure = currentTime;
+        currentVelocity1 = (rotationsSensor1 * wheelCircumference * 3.6) / (currentTime - lastVelocityMeasure1);
+        lastVelocityMeasure1 = currentTime;
         rotationsSensor1 = 0;
+    }
+}
+
+void HallSensor::calculateVelocity2() {
+    unsigned long currentTime = millis();
+
+    if (lastVelocityMeasure2 + measureTime < currentTime) {
+        float wheelDiameterMeters = WHEEL_DIAMETER / 1000.0;
+        float wheelCircumference = wheelDiameterMeters * PI;
+        currentVelocity2 = (rotationsSensor2 * wheelCircumference * 3.6) / (currentTime - lastVelocityMeasure2);
+        lastVelocityMeasure2 = currentTime;
         rotationsSensor2 = 0;
-
-        // Obliczenie średniej prędkości
-        float averageVelocity = (velocity1Local + velocity2Local) / 2;
-
-        // Przeliczenie prędkości z m/s na km/h
-        currentVelocity = averageVelocity * 3.6; // 1 m/s = 3.6 km/h
     }
 }
 
@@ -41,11 +39,13 @@ void HallSensor::setup() {
 
     rotationsSensor1 = 0;
     rotationsSensor2 = 0;
-    lastVelocityMeasure = 0;
+    lastVelocityMeasure1 = millis();
+    lastVelocityMeasure2 = millis();
     measureTime = 1000;
 }
 
 void HallSensor::loop() {
-    calculateVelocity();
+    calculateVelocity1();
+    calculateVelocity2();
     delay(10);
 }
