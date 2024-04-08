@@ -120,8 +120,11 @@ int16_t Adafruit_ADS1X15::readADC_SingleEnded(uint8_t channel) {
   startADCReading(MUX_BY_CHANNEL[channel], /*continuous=*/false);
 
   // Wait for the conversion to complete
-  while (!conversionComplete())
-    ;
+  delay(10);
+  if(!conversionComplete()){
+    Serial.println("ADS utracony");
+    return 0;
+  }
 
   // Read the conversion results
   return getLastConversionResults();
