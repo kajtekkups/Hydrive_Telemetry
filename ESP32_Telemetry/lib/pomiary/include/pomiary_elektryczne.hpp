@@ -9,7 +9,7 @@
 /**** stale zwiazane z pomiarami *****/
 #define NAPIECIE_REFERENCYJNE 5
 #define ACS758_SENSITIVITY_DEFAULT 0.04  // wrazliwosc czujnika wyrazona w V/A
-#define BLAD_POMIARU 0.65
+#define BLAD_POMIARU 0.04
 
 /**** Analog Digital Converter modules *****/
 #define LICZBA_PRZETWORNIKOW 4  //przy zmianie liczby przetwornikow nalezy zmienic funkcje init_ADC

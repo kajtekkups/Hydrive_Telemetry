@@ -3,13 +3,13 @@
 
 SdFileSystem micro_sd_file;
 
-void SdFileSystem::begin(){
+uint8_t SdFileSystem::begin(){
     if(!SD.begin(0)){
       pinMode(MICROSD_STATE_LED, OUTPUT);
       digitalWrite(MICROSD_STATE_LED, HIGH);
 
       Serial.println("Card Mount Failed");
-      return;
+      return 0;
     }
     uint8_t cardType = SD.cardType();
 
@@ -18,7 +18,7 @@ void SdFileSystem::begin(){
       digitalWrite(MICROSD_STATE_LED, HIGH);
 
       Serial.println("No SD card attached");
-      return;
+      return 0;
     }
     
     uint8_t i = 0;
@@ -31,6 +31,7 @@ void SdFileSystem::begin(){
     }
     
     file_path = file_path_temporary;
+    return 1;
   }
 
 

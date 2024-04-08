@@ -99,7 +99,7 @@ void MQTT_reconnect() {
 
 void WIFI_reconnect(){
  
-  Serial.print("\n Reconnecting to \n");
+  Serial.print("Reconnecting to: ");
   Serial.println(WIFI_SSID);
 
   WiFi.disconnect();

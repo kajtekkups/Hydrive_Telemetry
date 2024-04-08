@@ -72,10 +72,11 @@ float CalculateAmp(float Measure_VT){
   //amperomierz mierzy w zakresie -50 --- 50 A
   // 0A odpowiada połowie napięcia zasilającego przetwornik ADC (dla 5V będzie to 2.5V)
 
-  float pomiar_znormalizowany = Measure_VT - (NAPIECIE_REFERENCYJNE/2); 
-
-  float Amp = pomiar_znormalizowany / ACS758_SENSITIVITY_DEFAULT - BLAD_POMIARU;
+  float pomiar_znormalizowany = Measure_VT - 2.5; //(NAPIECIE_REFERENCYJNE/2); 
+  pomiar_znormalizowany = pomiar_znormalizowany - BLAD_POMIARU;
   
+  float Amp = pomiar_znormalizowany / ACS758_SENSITIVITY_DEFAULT;
+
   return Amp; 
   }
 
@@ -84,7 +85,8 @@ float CalculateVolt(float Measure){
   float Volt;
 
   //dzielnik dzieli w stosunku 1/10, dodatkowo wystepuje staly blad 8%
-  Volt = Measure * 10.08;
+  Volt = Measure * 10;
+  Volt = Volt * 1.11;
 
   return Volt;
 }

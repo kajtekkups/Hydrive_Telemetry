@@ -12,10 +12,10 @@ void setup() {
   Serial.println("PC Serial connection established");
 
   establish_mqtt_connection();
-
-  init_ADC();
   
   micro_sd_file.begin(); //jezeli nie wykryje sd to zapali lampke i nie bedzie blokowac programu
+
+  init_ADC();
 
   hallSensorInstance.setup();
 
