@@ -52,15 +52,26 @@ void setup_wifi() {
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
 
   pinMode(WIFI_STATE_LED, OUTPUT);
+  uint8_t tries = 0;
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
     digitalWrite(WIFI_STATE_LED, HIGH);
+    if(tries > 10){ 
+      break;
+    }
+    tries++;
   }
   
-  randomSeed(micros());
-  Serial.println("\nWiFi connected\nIP address: ");
-  Serial.println(WiFi.localIP());
+  if(tries > 10){ 
+    Serial.println("\n couldn't connect to wifi \n");
+  }
+  else{
+    randomSeed(micros());
+    digitalWrite(WIFI_STATE_LED, LOW);
+    Serial.println("\nWiFi connected\nIP address: ");
+    Serial.println(WiFi.localIP());
+  }
 }
 
 
@@ -68,7 +79,7 @@ void MQTT_reconnect() {
   // Loop until we're reconnected
   pinMode(MQTT_STATE_LED, OUTPUT);
 
-  while (!MQTT_client.connected()) {
+  if(!MQTT_client.connected()) {
     Serial.print("Attempting MQTT connection...");
     
     String clientId = "ESP32";   // Create a random client ID
@@ -81,21 +92,39 @@ void MQTT_reconnect() {
       digitalWrite(MQTT_STATE_LED, HIGH);
       Serial.print("failed, rc=");
       Serial.print(MQTT_client.state());
-      Serial.println(" try again in 5 seconds");   // Wait 5 seconds before retrying
-      delay(5000);
     }
   }
 }
 
 
-void publish_MQTT_message(const char* topic, String payload){
-  if (MQTT_client.publish(topic, payload.c_str(), true)){
-    Serial.println("Message publised ["+String(topic)+"]: "+payload);
+void WIFI_reconnect(){
+ 
+  Serial.print("Reconnecting to: ");
+  Serial.println(WIFI_SSID);
+
+  WiFi.disconnect();
+  WiFi.mode(WIFI_STA);
+  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+
+  pinMode(WIFI_STATE_LED, OUTPUT);
+  if (WiFi.status() != WL_CONNECTED) {
+    digitalWrite(WIFI_STATE_LED, HIGH);
+    Serial.println("\n couldn't connect to wifi \n");
+  } else{
+    digitalWrite(WIFI_STATE_LED, LOW);
+    Serial.println("\nWiFi connected\n");
   }
-  else{
-    Serial.println("Failed to publish");
-  }
-    
+}
+
+
+  void publish_MQTT_message(const char* topic, String payload){
+    if (MQTT_client.publish(topic, payload.c_str(), true)){
+      Serial.println("Message publised ["+String(topic)+"]: "+payload);
+    }
+    else{
+      Serial.println("Failed to publish MQTT message");
+    }
+      
 }
 
 

@@ -1,7 +1,7 @@
 #include "pomiary_elektryczne.hpp"
 
 
-void AdsNodeInterface::begin(Adafruit_ADS1015* node_ads, uint8_t initialized, uint8_t current_pin, uint8_t voltage_pin){
+void AdsNodeInterface::begin(Adafruit_ADS1115* node_ads, uint8_t initialized, uint8_t current_pin, uint8_t voltage_pin){
   _node_ads = node_ads; 
   _initialized = initialized;
   _current_pin = current_pin;
@@ -21,7 +21,7 @@ void AdsNodeInterface::get_messurements(int16_t& voltage, int16_t& current){
 }
 
 // listy dostepnych przetwornikow ADS
-Adafruit_ADS1015 ads[LICZBA_PRZETWORNIKOW];
+Adafruit_ADS1115 ads[LICZBA_PRZETWORNIKOW];
 AdsNodeInterface ads_nodes[LICZBA_PRZETWORNIKOW];
 
 void init_ADC(){
@@ -72,10 +72,11 @@ float CalculateAmp(float Measure_VT){
   //amperomierz mierzy w zakresie -50 --- 50 A
   // 0A odpowiada połowie napięcia zasilającego przetwornik ADC (dla 5V będzie to 2.5V)
 
-  float pomiar_znormalizowany = Measure_VT - (NAPIECIE_REFERENCYJNE/2); 
-
-  float Amp = pomiar_znormalizowany / ACS758_SENSITIVITY_DEFAULT - BLAD_POMIARU;
+  float pomiar_znormalizowany = Measure_VT - 2.5; //(NAPIECIE_REFERENCYJNE/2); 
+  pomiar_znormalizowany = pomiar_znormalizowany - BLAD_POMIARU;
   
+  float Amp = pomiar_znormalizowany / ACS758_SENSITIVITY_DEFAULT;
+
   return Amp; 
   }
 
@@ -83,43 +84,10 @@ float CalculateAmp(float Measure_VT){
 float CalculateVolt(float Measure){
   float Volt;
 
+  //dzielnik dzieli w stosunku 1/10, dodatkowo wystepuje staly blad 8%
   Volt = Measure * 10;
+  Volt = Volt * 1.11;
 
   return Volt;
 }
 
-
-void Collect_electrical_data(){
-
-  int16_t results_vt;
-  int16_t results_I;
-
-  for(uint8_t i = 0; i < LICZBA_PRZETWORNIKOW; i++){
-    
-    ads_nodes[i].get_messurements(results_vt, results_I);
-    
-    dane_elektryczne.pomiar_VT[i] = CalculateVolt(ads[i].computeVolts(results_vt));
-    dane_elektryczne.pomiar_I[i] = CalculateAmp(ads[i].computeVolts(results_I));  
-  }
-  
-  dane_elektryczne.time = millis();
-}
-
-
-void Send_save_electrical_data(){
-  StaticJsonDocument<400> doc;  // data is send in json format 
-
-  // pobierz dane do zapisu
-  for(uint8_t i; i < LICZBA_PRZETWORNIKOW; i++){
-    doc["pomiar_VT" + std::to_string(i)] = dane_elektryczne.pomiar_VT[i]; //zapisz napiecie
-    doc["pomiar_I" + std::to_string(i)] = dane_elektryczne.pomiar_I[i]; //zapisz natezenie
-  }
-  doc["time_ms"] = dane_elektryczne.time;
-
-  //konwertuj dane
-  char mqtt_message[400];
-  serializeJson(doc, mqtt_message);
-
-  //wyslij na serwer
-  publish_MQTT_message(MQTT_PUBLISH_TOPIC, mqtt_message);
-}

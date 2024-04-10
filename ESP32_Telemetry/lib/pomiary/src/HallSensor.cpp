@@ -1,5 +1,10 @@
 #include "HallSensor.h"
 
+HallSensor hallSensorInstance;
+
+volatile long HallSensor::rotationsSensor1 = 0;
+volatile long HallSensor::rotationsSensor2 = 0;
+
 HallSensor::HallSensor() {}
 
 void HallSensor::addRotationSensor() {
@@ -41,6 +46,7 @@ void HallSensor::setup() {
     rotationsSensor2 = 0;
     lastVelocityMeasure1 = millis();
     lastVelocityMeasure2 = millis();
+
     measureTime = 1000;
 }
 

@@ -9,7 +9,7 @@
 /**** stale zwiazane z pomiarami *****/
 #define NAPIECIE_REFERENCYJNE 5
 #define ACS758_SENSITIVITY_DEFAULT 0.04  // wrazliwosc czujnika wyrazona w V/A
-#define BLAD_POMIARU 0.65
+#define BLAD_POMIARU 0.04
 
 /**** Analog Digital Converter modules *****/
 #define LICZBA_PRZETWORNIKOW 4  //przy zmianie liczby przetwornikow nalezy zmienic funkcje init_ADC
@@ -20,30 +20,24 @@
 #define ADS_ADRESS_ZA_PRZETWORNICAMI 0x49 // addr to vdd
 #define ADS_ADRESS_KONDENSATORY 0x4B // addr to scl
 
-extern Adafruit_ADS1015 ads[LICZBA_PRZETWORNIKOW];
-
-struct {
-  unsigned long time;
-  float pomiar_VT[LICZBA_PRZETWORNIKOW];
-  float pomiar_I[LICZBA_PRZETWORNIKOW];
-
-} dane_elektryczne;
-
 
 class AdsNodeInterface{
   public:
 
-    void begin(Adafruit_ADS1015* node_ads, uint8_t initialized, uint8_t current_pin, uint8_t voltage_pin);
+    void begin(Adafruit_ADS1115* node_ads, uint8_t initialized, uint8_t current_pin, uint8_t voltage_pin);
 
     // zbierz pomiary i zwroc w kolejnosci napiecie - prad
     void get_messurements(int16_t& voltage, int16_t& current);
 
   private:
     uint8_t _initialized;
-    Adafruit_ADS1015* _node_ads;
+    Adafruit_ADS1115* _node_ads;
     uint8_t _current_pin;
     uint8_t _voltage_pin;
 };
+
+extern Adafruit_ADS1115 ads[LICZBA_PRZETWORNIKOW];
+extern AdsNodeInterface ads_nodes[LICZBA_PRZETWORNIKOW];
 
 
 /************************
@@ -75,13 +69,6 @@ float CalculateAmp(float Measure);
 *************************/
 float CalculateVolt(float Measure);
  
-
-/**** zbiera pomiary i zapisuje je w strukturze dane_elektryczne *****/
-void Collect_electrical_data();
-
-
-/**** przesyla pomiary zapisane w strukturze dane_elektryczne *****/
-void Send_save_electrical_data();
 
 
 #endif

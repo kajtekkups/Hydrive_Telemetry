@@ -36,6 +36,7 @@ void setup_wifi();
 /************* Connect to MQTT Broker ***********/
 void MQTT_reconnect();
 
+void WIFI_reconnect();
 
 /**** Method for Publishing MQTT Messages **********/
 void publish_MQTT_message(const char* topic, String payload);

@@ -4,7 +4,7 @@
 #include "MQTT_Communication.hpp"
 #include "Lib_microSD.hpp"
 
-HallSensor hallSensorInstance;
+#include "obsluga_danych.hpp"
 
 void setup() {
   
@@ -12,22 +12,33 @@ void setup() {
   Serial.println("PC Serial connection established");
 
   establish_mqtt_connection();
+  
+  micro_sd_file.begin(); //jezeli nie wykryje sd to zapali lampke i nie bedzie blokowac programu
 
   init_ADC();
 
-  init_micro_sd();
   hallSensorInstance.setup();
+
 }
 
 void loop() {
 
   if (!MQTT_client.connected()) MQTT_reconnect(); // check if MQTT client is connected
-  //TODO: zrobic podobnie dla wifi
+
+  /****************************************************************
+   * 1. wyeliminowac blokowanie braku polaczenia z internetem
+   * 2. sprawdzic scenariusze testowe
+   * ****************************************************************/ 
+  if (WiFi.status() != WL_CONNECTED) WIFI_reconnect();
+
+  //TODO: dodać obsługę diod:
+    //brak polaczenia z SD
+    //brak polaczenia z serwerem MQTT
   
-  Collect_electrical_data(); //zbierz pomiary ADC z czujnikow
-  Send_save_electrical_data(); //wyslij pomiary na serwer
+  Collect_data(); //zbierz pomiary 
+  Send_save_data(); //wyslij pomiary na serwer
 
   hallSensorInstance.loop();
 
-  delay(3000);
+  delay(1000);
 }
