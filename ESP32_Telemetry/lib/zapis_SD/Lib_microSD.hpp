@@ -9,7 +9,7 @@
 
 class SdFileSystem{
 public:
-  void begin();
+  uint8_t begin();
 
   void writeFile(const char * message);
 
