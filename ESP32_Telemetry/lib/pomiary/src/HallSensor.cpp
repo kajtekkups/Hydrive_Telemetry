@@ -12,24 +12,27 @@ void HallSensor::addRotationSensor() {
     rotationsSensor2++;
 }
 
-void HallSensor::calculateVelocity() {
+void HallSensor::calculateVelocity1() {
     unsigned long currentTime = millis();
 
-    if (lastVelocityMeasure + measureTime < currentTime) {
-        float velocity1Local = (rotationsSensor1 * WHEEL_DIAMETER) / (currentTime - lastVelocityMeasure);
-        float velocity2Local = (rotationsSensor2 * WHEEL_DIAMETER) / (currentTime - lastVelocityMeasure);
-        lastVelocityMeasure = currentTime;
+    if (lastVelocityMeasure1 + measureTime < currentTime) {
+        float wheelDiameterMeters = WHEEL_DIAMETER / 1000.0;
+        float wheelCircumference = wheelDiameterMeters * PI;
+        currentVelocity1 = (rotationsSensor1 * wheelCircumference * 3.6) / (currentTime - lastVelocityMeasure1);
+        lastVelocityMeasure1 = currentTime;
         rotationsSensor1 = 0;
-        rotationsSensor2 = 0;
+    }
+}
 
-        if (fabs(velocity1Local) > 0.01 && fabs(velocity2Local) > 0.01) {
-            float averageVelocity = (velocity1Local + velocity2Local) / 2;
-            currentVelocity = averageVelocity;
-        } else if (fabs(velocity1Local) > 0.01) {
-            currentVelocity = velocity1Local;
-        } else if (fabs(velocity2Local) > 0.01) {
-            currentVelocity = velocity2Local;
-        }
+void HallSensor::calculateVelocity2() {
+    unsigned long currentTime = millis();
+
+    if (lastVelocityMeasure2 + measureTime < currentTime) {
+        float wheelDiameterMeters = WHEEL_DIAMETER / 1000.0;
+        float wheelCircumference = wheelDiameterMeters * PI;
+        currentVelocity2 = (rotationsSensor2 * wheelCircumference * 3.6) / (currentTime - lastVelocityMeasure2);
+        lastVelocityMeasure2 = currentTime;
+        rotationsSensor2 = 0;
     }
 }
 
@@ -39,12 +42,16 @@ void HallSensor::setup() {
     attachInterrupt(digitalPinToInterrupt(VELOCITY_MEASURE_PIN_1), addRotationSensor, RISING);
     attachInterrupt(digitalPinToInterrupt(VELOCITY_MEASURE_PIN_2), addRotationSensor, RISING);
 
-    lastVelocityMeasure = 0;
+    rotationsSensor1 = 0;
+    rotationsSensor2 = 0;
+    lastVelocityMeasure1 = millis();
+    lastVelocityMeasure2 = millis();
+
     measureTime = 1000;
 }
 
 void HallSensor::loop() {
-    calculateVelocity();
-    // wyświetlanie na ekranie bolidu - miejsce na kod
+    calculateVelocity1();
+    calculateVelocity2();
     delay(10);
 }

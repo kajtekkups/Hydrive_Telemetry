@@ -5,7 +5,7 @@
 
 #define VELOCITY_MEASURE_PIN_1 21
 #define VELOCITY_MEASURE_PIN_2 22
-#define WHEEL_DIAMETER 460.0 // srednica kola w mm (zmierzyc musze)
+#define WHEEL_DIAMETER 457.2 //18 cali
 
 class HallSensor {
 public:
@@ -13,16 +13,21 @@ public:
     void setup();
     void loop();
 
-    float currentVelocity;
+    float currentVelocity1;
+    float currentVelocity2;
+
 
 private:
     static void addRotationSensor();
-    void calculateVelocity();
+    void calculateVelocity1();
+    void calculateVelocity2();
+
 
     static volatile long rotationsSensor1;
     static volatile long rotationsSensor2;
 
-    unsigned long lastVelocityMeasure;
+    unsigned long lastVelocityMeasure1;
+    unsigned long lastVelocityMeasure2;
     unsigned long measureTime;
 };
 
