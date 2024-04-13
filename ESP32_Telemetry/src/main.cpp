@@ -25,20 +25,11 @@ void loop() {
 
   if (!MQTT_client.connected()) MQTT_reconnect(); // check if MQTT client is connected
 
-  /****************************************************************
-   * 1. wyeliminowac blokowanie braku polaczenia z internetem
-   * 2. sprawdzic scenariusze testowe
-   * ****************************************************************/ 
   if (WiFi.status() != WL_CONNECTED) WIFI_reconnect();
-
-  //TODO: dodać obsługę diod:
-    //brak polaczenia z SD
-    //brak polaczenia z serwerem MQTT
   
   Collect_data(); //zbierz pomiary 
   Send_save_data(); //wyslij pomiary na serwer
 
   hallSensorInstance.loop();
-
-  delay(1000);
+  delay(100);
 }
