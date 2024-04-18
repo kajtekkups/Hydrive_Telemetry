@@ -48,7 +48,7 @@ void HallSensor::setup() {
     attachInterrupt(digitalPinToInterrupt(VELOCITY_MEASURE_PIN_2), addRotationSensor, RISING);
 
     lastVelocityMeasure = 0;
-    measureTime = 1000;
+    measureTime = 500;
 }
 
 void HallSensor::loop() {
