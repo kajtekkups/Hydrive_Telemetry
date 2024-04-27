@@ -18,7 +18,7 @@
 #define ADS_ADRESS_ZA_OGNIWEM 0x48 // addr floating or gnd
 #define ADS_ADRESS_PRZED_PRZETWORNICAMI 0x4a //addr to sda
 #define ADS_ADRESS_ZA_PRZETWORNICAMI 0x49 // addr to vdd
-#define ADS_ADRESS_KONDENSATORY 0x4B // addr to scl
+#define ADS_ADRESS_KONDENSATORY 0x4b // addr to scl
 
 
 class AdsNodeInterface{
