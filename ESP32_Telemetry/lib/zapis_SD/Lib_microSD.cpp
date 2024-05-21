@@ -35,14 +35,14 @@ uint8_t SdFileSystem::begin(){
   }
 
 
-void SdFileSystem::writeFile(const char * message){
+void SdFileSystem::writeFile(String message){
 
     File file = SD.open(file_path.c_str(), FILE_WRITE);
     if(!file){
       Serial.println("Failed to open file for writing");
       return;
     }
-    if(file.print(message)){
+    if(file.print(message.c_str())){
       Serial.println("File written");
     } else {
       Serial.println("Write failed");
@@ -51,14 +51,14 @@ void SdFileSystem::writeFile(const char * message){
   }
 
 
-void SdFileSystem::appendFile(const char * message){
+void SdFileSystem::appendFile(String message){
 
     File file = SD.open(file_path.c_str(), FILE_APPEND);
     if(!file){
       Serial.println("Failed to open file for appending");
       return;
     }
-    if(file.print(message)){
+    if(file.print(message.c_str())){
         Serial.println("Message appended on sd card \n\r");
     } else {
       Serial.println("Append failed");

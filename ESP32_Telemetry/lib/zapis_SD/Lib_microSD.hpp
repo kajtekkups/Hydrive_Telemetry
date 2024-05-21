@@ -11,9 +11,9 @@ class SdFileSystem{
 public:
   uint8_t begin();
 
-  void writeFile(const char * message);
+  void writeFile(String message);
 
-  void appendFile(const char * message);
+  void appendFile(String message);
 
 
 private:
