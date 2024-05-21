@@ -13,7 +13,7 @@ public:
     void setup();
     void loop();
 
-    uint8_t currentVelocity;
+    float currentVelocity;
     
 private:
     static void addRotationSensor();

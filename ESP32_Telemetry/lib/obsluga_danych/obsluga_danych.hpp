@@ -11,7 +11,7 @@ struct {
   unsigned long czas_pomiaru;
   float pomiar_VT[LICZBA_PRZETWORNIKOW];
   float pomiar_I[LICZBA_PRZETWORNIKOW];
-  uint8_t velocity;
+  float velocity;
 
 } dane_pomiarowe;
 
