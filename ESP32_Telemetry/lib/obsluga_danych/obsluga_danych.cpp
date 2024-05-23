@@ -17,10 +17,10 @@ void Collect_data(){
   }
   
   // pobierz predkosc 
-  dane_pomiarowe.velocity = hallSensorInstance.currentVelocity;
+  // dane_pomiarowe.velocity = hallSensorInstance.currentVelocity;
 
   // sprawdz czas pomiaru
-  dane_pomiarowe.czas_pomiaru = millis() - dane_pomiarowe.time;
+  // dane_pomiarowe.czas_pomiaru = millis() - dane_pomiarowe.time;
   
 }
 
@@ -35,25 +35,25 @@ void Send_save_data(){
     doc["pomiar_I" + std::to_string(i)] = dane_pomiarowe.pomiar_I[i]; //zapisz natezenie
   }
   
-  // zapisz predkosc
-  doc["predkosc"] = dane_pomiarowe.velocity;
+  // // zapisz predkosc
+  // doc["predkosc"] = dane_pomiarowe.velocity;
 
-  // zapisz opoznienie
-  doc["czas_pomiaru"] = dane_pomiarowe.czas_pomiaru;
+  // // zapisz opoznienie
+  // doc["czas_pomiaru"] = dane_pomiarowe.czas_pomiaru;
 
-  // zapisz czas
-  doc["time_ms"] = dane_pomiarowe.time;
-
-
-  //konwertuj dane
-  char package[400];
-  serializeJson(doc, package);
+  // // zapisz czas
+  // doc["time_ms"] = dane_pomiarowe.time;
 
 
-  // zapisz na karcie
-  micro_sd_file.appendFile(package);
+  // //konwertuj dane
+  // char package[400];
+  // serializeJson(doc, package);
 
 
-  //wyslij na serwer
-  publish_MQTT_message(MQTT_PUBLISH_TOPIC, package);
+  // // zapisz na karcie
+  // micro_sd_file.appendFile(package);
+
+
+  // //wyslij na serwer
+  // publish_MQTT_message(MQTT_PUBLISH_TOPIC, package);
 }

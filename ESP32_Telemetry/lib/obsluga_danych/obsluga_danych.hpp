@@ -1,9 +1,9 @@
 #ifndef OBSLUGA_DANYCH_HPP
 #define OBSLUGA_DANYCH_HPP
 
-#include "Lib_microSD.hpp"
-#include "MQTT_Communication.hpp"
-#include "HallSensor.h"
+// #include "Lib_microSD.hpp"
+// #include "MQTT_Communication.hpp"
+// #include "HallSensor.h"
 #include "pomiary_elektryczne.hpp"
 
 struct {
