@@ -37,7 +37,7 @@ class AdsNodeInterface{
 };
 
 extern Adafruit_ADS1115 ads[LICZBA_PRZETWORNIKOW];
-extern AdsNodeInterface ads_nodes[LICZBA_PRZETWORNIKOW];
+extern AdsNodeInterface ads_objects[LICZBA_PRZETWORNIKOW];
 
 
 /************************

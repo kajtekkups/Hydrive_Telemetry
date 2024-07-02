@@ -21,8 +21,11 @@ void AdsNodeInterface::get_messurements(int16_t& voltage, int16_t& current){
 }
 
 // listy dostepnych przetwornikow ADS
-Adafruit_ADS1115 ads[LICZBA_PRZETWORNIKOW];
-AdsNodeInterface ads_nodes[LICZBA_PRZETWORNIKOW];
+Adafruit_ADS1115 ads[LICZBA_PRZETWORNIKOW];  
+/* poniewaz chcemy, aby pomiary byly przesylane niezaleznie czy wszytkie plytki pomiarowe
+   sa podpiete, potrzebna jest klasa, która bedzie zwracala poprawne warosci (AdsNodeInterface::get_messurements)
+   ads_nodes to lista obiekow tej klasy*/
+AdsNodeInterface ads_objects[LICZBA_PRZETWORNIKOW];  
 
 void init_ADC(){
 
@@ -32,37 +35,37 @@ void init_ADC(){
   if (!ads[0].begin(ADS_ADRESS_ZA_OGNIWEM)) {
     Serial.println("blad polaczenia z ADS 0");
     digitalWrite(ADC_STATE_LED, HIGH);
-    ads_nodes[0].begin(&ads[0], 0, ADS_0_CURRENT, ADS_0_VOLT);
+    ads_objects[0].begin(&ads[0], 0, ADS_0_CURRENT, ADS_0_VOLT);
   }
   else{
-    ads_nodes[0].begin(&ads[0], 1, ADS_0_CURRENT, ADS_0_VOLT);
+    ads_objects[0].begin(&ads[0], 1, ADS_0_CURRENT, ADS_0_VOLT);
   }
   
   if (!ads[1].begin(ADS_ADRESS_PRZED_PRZETWORNICAMI)) {
     Serial.println("blad polaczenia z ADS 1");
     digitalWrite(ADC_STATE_LED, HIGH);
-    ads_nodes[1].begin(&ads[1], 0, ADS_1_CURRENT, ADS_1_VOLT);
+    ads_objects[1].begin(&ads[1], 0, ADS_1_CURRENT, ADS_1_VOLT);
   }
   else{
-    ads_nodes[1].begin(&ads[1], 1, ADS_1_CURRENT, ADS_1_VOLT);
+    ads_objects[1].begin(&ads[1], 1, ADS_1_CURRENT, ADS_1_VOLT);
   }
 
   if (!ads[2].begin(ADS_ADRESS_ZA_PRZETWORNICAMI)) {
     Serial.println("blad polaczenia z ADS 2");
     digitalWrite(ADC_STATE_LED, HIGH);
-    ads_nodes[2].begin(&ads[2], 0, ADS_2_CURRENT, ADS_2_VOLT);
+    ads_objects[2].begin(&ads[2], 0, ADS_2_CURRENT, ADS_2_VOLT);
   }
   else{
-    ads_nodes[2].begin(&ads[2], 1, ADS_2_CURRENT, ADS_2_VOLT);
+    ads_objects[2].begin(&ads[2], 1, ADS_2_CURRENT, ADS_2_VOLT);
   }
 
   if(!ads[3].begin(ADS_ADRESS_KONDENSATORY)) {
     Serial.println("blad polaczenia z ADS 3");
     digitalWrite(ADC_STATE_LED, HIGH);
-    ads_nodes[3].begin(&ads[3], 0, ADS_3_CURRENT, ADS_3_VOLT);
+    ads_objects[3].begin(&ads[3], 0, ADS_3_CURRENT, ADS_3_VOLT);
   }
   else{
-    ads_nodes[3].begin(&ads[3], 1, ADS_3_CURRENT, ADS_3_VOLT);
+    ads_objects[3].begin(&ads[3], 1, ADS_3_CURRENT, ADS_3_VOLT);
   }
 }
 
