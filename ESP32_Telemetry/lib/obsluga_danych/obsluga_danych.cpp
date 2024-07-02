@@ -10,7 +10,7 @@ void Collect_data(){
   int16_t results_I;
 
   for(uint8_t i = 0; i < LICZBA_PRZETWORNIKOW; i++){    
-    ads_nodes[i].get_messurements(results_vt, results_I);
+    ads_objects[i].get_messurements(results_vt, results_I);
     
     dane_pomiarowe.pomiar_VT[i] = CalculateVolt(ads[i].computeVolts(results_vt));
     dane_pomiarowe.pomiar_I[i] = CalculateAmp(ads[i].computeVolts(results_I));  
