@@ -17,16 +17,14 @@ public:
     
 private:
     static void addRotationSensor();
-    void calculateVelocity1();
-    void calculateVelocity2();
+    void calculateVelocity();
 
 
     static volatile long rotationsSensor1;
     static volatile long rotationsSensor2;
     static unsigned long interruptTime;
 
-    unsigned long lastVelocityMeasure1;
-    unsigned long lastVelocityMeasure2;
+    unsigned long lastVelocityMeasure;
     unsigned long measureTime;
 };
 
