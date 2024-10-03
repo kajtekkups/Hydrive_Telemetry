@@ -43,6 +43,9 @@
         "stdexcept": "cpp",
         "streambuf": "cpp",
         "cinttypes": "cpp",
-        "typeinfo": "cpp"
+        "typeinfo": "cpp",
+        "u_device_serial.h": "c",
+        "u_device_handle.h": "c",
+        "u_common_spi.h": "c"
     }
 }

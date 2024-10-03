@@ -3,6 +3,7 @@
 #include "pomiary_elektryczne.hpp"
 #include "MQTT_Communication.hpp"
 #include "Lib_microSD.hpp"
+#include "GNSS.hpp"
 
 #include "obsluga_danych.hpp"
 
@@ -19,17 +20,19 @@ void setup() {
 
   hallSensorInstance.setup();
 
+
+  randommowa_funkcja();
 }
 
 void loop() {
 
-  if (!MQTT_client.connected()) MQTT_reconnect(); // check if MQTT client is connected
+  // if (!MQTT_client.connected()) MQTT_reconnect(); // check if MQTT client is connected
 
-  if (WiFi.status() != WL_CONNECTED) WIFI_reconnect();
+  // if (WiFi.status() != WL_CONNECTED) WIFI_reconnect();
   
-  Collect_data(); //zbierz pomiary 
-  Send_save_data(); //wyslij pomiary na serwer
+  // Collect_data(); //zbierz pomiary 
+  // Send_save_data(); //wyslij pomiary na serwer
 
-  hallSensorInstance.loop();
-  delay(100);
+  // hallSensorInstance.loop();
+  // delay(100);
 }

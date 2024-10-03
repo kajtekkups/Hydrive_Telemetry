@@ -21,4 +21,7 @@
 #define ADS_3_CURRENT 0
 
 
+#define GNSS_RX 16
+#define GNSS_TX 17
+
 #endif //PIN_DEFINES_HPP
