@@ -1,10 +1,10 @@
 #include <Arduino.h>
 #include "HallSensor.h"
-#include "pomiary_elektryczne.hpp"
+#include "ElecticalMeasurements.hpp"
 #include "MQTT_Communication.hpp"
 #include "Lib_microSD.hpp"
 
-#include "obsluga_danych.hpp"
+#include "DataManagement.hpp"
 
 void setup() {
   

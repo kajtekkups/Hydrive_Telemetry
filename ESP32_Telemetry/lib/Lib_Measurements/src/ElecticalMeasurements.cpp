@@ -1,4 +1,4 @@
-#include "pomiary_elektryczne.hpp"
+#include "ElecticalMeasurements.hpp"
 
 
 void AdsNodeInterface::begin(AttinyADC* node_ads, uint8_t initialized, uint8_t current_pin, uint8_t voltage_pin){

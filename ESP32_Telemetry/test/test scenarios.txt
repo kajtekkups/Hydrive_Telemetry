@@ -1,0 +1,6 @@
+begin: wifi connection- wifi reconection: will it save to microSD card again
+begin: no microSD card: will it work properly
+begin: no wifi connection: will it save to microSD card
+begin: no wifi connection: will it connect to wifi later?
+
+ADC converter module loss during race (will it work without it?)

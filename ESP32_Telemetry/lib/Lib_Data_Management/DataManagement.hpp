@@ -4,7 +4,7 @@
 #include "Lib_microSD.hpp"
 #include "MQTT_Communication.hpp"
 #include "HallSensor.h"
-#include "pomiary_elektryczne.hpp"
+#include "ElecticalMeasurements.hpp"
 
 struct {
   unsigned long time;
