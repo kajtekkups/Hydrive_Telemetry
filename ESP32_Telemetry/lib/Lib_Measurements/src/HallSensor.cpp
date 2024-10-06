@@ -16,7 +16,6 @@ void HallSensor::addRotationSensor() {
 }
 
 void HallSensor::calculateVelocity() {
-    // disable interrupts
     noInterrupts();
 
     unsigned long currentTime = millis();
@@ -24,19 +23,18 @@ void HallSensor::calculateVelocity() {
 
     if (lastVelocityMeasure + measureTime < currentTime) {
 
-        float velocity2Local = rotationsSensor2 * WHEEL_CIRCUMFERENCE;  //przejechane metry
+        float distance = rotationsSensor2 * WHEEL_CIRCUMFERENCE;  //distance
         float local_time = currentTime - lastVelocityMeasure;
-        local_time = local_time/1000;  //konwersja na sekundy
-        velocity2Local = velocity2Local / local_time; //[m/s]
-        velocity2Local = velocity2Local * 3.6; //konwersja na km/h
+        local_time = local_time/1000;  //[s]
+        float velocity = distance / local_time; //[m/s]
+        velocity = velocity * 3.6; // [km/h]
 
         lastVelocityMeasure = currentTime;
         rotationsSensor2 = 0;
 
-        currentVelocity = velocity2Local;
+        currentVelocity = velocity;
     }
 
-    // eneble interrupts
     interrupts();
 }
 

@@ -8,18 +8,18 @@
 
 struct {
   unsigned long time;
-  unsigned long czas_pomiaru;
-  float pomiar_VT[LICZBA_PRZETWORNIKOW];
-  float pomiar_I[LICZBA_PRZETWORNIKOW];
+  unsigned long measurement_time;
+  float voltage_measurement[ADC_NUMBER];
+  float current_measurement[ADC_NUMBER];
   float velocity;
 
-} dane_pomiarowe;
+} measure_data;
 
 
-/**** zbiera pomiary i zapisuje je w strukturze dane_elektryczne *****/
+/**** collects data and saces it to measure_data structure*****/
 void Collect_data();
 
-/**** przesyla pomiary zapisane w strukturze dane_elektryczne *****/
+/**** saves and sends data from measure_data structure*****/
 void Send_save_data();
 
 

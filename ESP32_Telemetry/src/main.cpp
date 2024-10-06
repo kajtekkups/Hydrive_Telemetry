@@ -13,7 +13,7 @@ void setup() {
 
   // establish_mqtt_connection();
   
-  // micro_sd_file.begin(); //jezeli nie wykryje sd to zapali lampke i nie bedzie blokowac programu
+  // micro_sd_file.begin();
 
   init_ADC();
 
@@ -27,9 +27,9 @@ void loop() {
 
   // if (WiFi.status() != WL_CONNECTED) WIFI_reconnect();
   
-  Collect_data(); //zbierz pomiary 
-  // Send_save_data(); //wyslij pomiary na serwer
+  Collect_data();
+  // Send_save_data(); //send data to the server
 
   // hallSensorInstance.loop();
-  delay(300);
+  delay(100);
 }

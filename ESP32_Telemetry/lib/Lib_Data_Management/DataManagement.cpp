@@ -3,24 +3,21 @@
 
 void Collect_data(){
 
-  dane_pomiarowe.time = millis();
+  measure_data.time = millis();
 
-  // zbierz dane elektryczne
   int16_t results_vt;
   int16_t results_I;
 
-  for(uint8_t i = 0; i < LICZBA_PRZETWORNIKOW; i++){    
+  for(uint8_t i = 0; i < ADC_NUMBER; i++){    
     ads_objects[i].get_messurements(results_vt, results_I);
     
-    dane_pomiarowe.pomiar_VT[i] = CalculateVolt(ads[i].computeVolts(results_vt));
-    dane_pomiarowe.pomiar_I[i] = CalculateAmp(ads[i].computeVolts(results_I));  
+    measure_data.voltage_measurement[i] = CalculateVolt(ads[i].computeVolts(results_vt));
+    measure_data.current_measurement[i] = CalculateAmp(ads[i].computeVolts(results_I));  
   }
   
-  // pobierz predkosc 
-  dane_pomiarowe.velocity = hallSensorInstance.currentVelocity;
+  measure_data.velocity = hallSensorInstance.currentVelocity;
 
-  // sprawdz czas pomiaru
-  dane_pomiarowe.czas_pomiaru = millis() - dane_pomiarowe.time;
+  measure_data.measurement_time = millis() - measure_data.time;
   
 }
 
@@ -29,31 +26,27 @@ void Send_save_data(){
   // data is send in json format 
   StaticJsonDocument<400> doc; 
 
-  // pobierz dane elektryczne do zapisu
-  for(uint8_t i; i < LICZBA_PRZETWORNIKOW; i++){
-    doc["pomiar_VT" + std::to_string(i)] = dane_pomiarowe.pomiar_VT[i]; //zapisz napiecie
-    doc["pomiar_I" + std::to_string(i)] = dane_pomiarowe.pomiar_I[i]; //zapisz natezenie
+  //prepare data for transmition
+  for(uint8_t i; i < ADC_NUMBER; i++){
+    doc["pomiar_VT" + std::to_string(i)] = measure_data.voltage_measurement[i]; 
+    doc["pomiar_I" + std::to_string(i)] = measure_data.current_measurement[i];
   }
-  
-  // zapisz predkosc
-  doc["predkosc"] = dane_pomiarowe.velocity;
 
-  // zapisz opoznienie
-  doc["czas_pomiaru"] = dane_pomiarowe.czas_pomiaru;
+  doc["predkosc"] = measure_data.velocity;
 
-  // zapisz czas
-  doc["time_ms"] = dane_pomiarowe.time;
+  doc["czas_pomiaru"] = measure_data.measurement_time;
 
+  doc["time_ms"] = measure_data.time;
 
-  //konwertuj dane
+  //convert data
   char package[400];
   serializeJson(doc, package);
 
 
-  // zapisz na karcie
+  //save data
   micro_sd_file.appendFile(package);
 
 
-  //wyslij na serwer
+  //send data
   publish_MQTT_message(MQTT_PUBLISH_TOPIC, package);
 }

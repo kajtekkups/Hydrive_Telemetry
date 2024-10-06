@@ -6,14 +6,20 @@
 #include "AttinyADC.h"
 #include "Pin_Defines.hpp"
 
-/**** stale zwiazane z pomiarami *****/
-#define NAPIECIE_REFERENCYJNE 5
-#define ACS758_SENSITIVITY_DEFAULT 0.04  // wrazliwosc czujnika wyrazona w V/A
-#define BLAD_POMIARU 0.04
 
-/**** Analog Digital Converter modules *****/
-#define LICZBA_PRZETWORNIKOW 4  //przy zmianie liczby przetwornikow nalezy zmienic funkcje init_ADC
+/*=========================================================================
+    CONSTANTS
+    -----------------------------------------------------------------------*/
+#define ACS758_SENSITIVITY_DEFAULT 0.04  // sensor sensitivity [V/A]
+#define MEASUREMENT_ERROR 0.04
+/*=========================================================================*/
 
+
+/*=========================================================================
+    Number of ADC modules
+    -----------------------------------------------------------------------*/
+#define ADC_NUMBER 4  //if changeing this function, change init_ADC function
+/*=========================================================================*/
 
 #define ADS_ADRESS_ZA_OGNIWEM 0x48 // addr floating or gnd
 #define ADS_ADRESS_PRZED_PRZETWORNICAMI 0x4a //addr to sda
@@ -26,7 +32,6 @@ class AdsNodeInterface{
 
     void begin(AttinyADC* node_ads, uint8_t initialized, uint8_t current_pin, uint8_t voltage_pin);
 
-    // zbierz pomiary i zwroc w kolejnosci napiecie - prad
     void get_messurements(int16_t& voltage, int16_t& current);
 
   private:
@@ -36,37 +41,39 @@ class AdsNodeInterface{
     uint8_t _voltage_pin;
 };
 
-extern AttinyADC ads[LICZBA_PRZETWORNIKOW];
-extern AdsNodeInterface ads_objects[LICZBA_PRZETWORNIKOW];
+extern AttinyADC ads[ADC_NUMBER];
+extern AdsNodeInterface ads_objects[ADC_NUMBER];
 
 
-/************************
- *  Inicjalizuje ADC lub zewnetrzne kontrolery ADC 
- * 
- *  Przetwornikow ADC na plytce ma byc 4, 
- *  ale nie wszystkie musza dzialac na raz, brak 
- *  jednego przetwornika nie wplywa na system
- * 
- ************************/
+/**************************************************************************/
+/*!
+    @brief  Initialize all I2C ADC converters
+
+*/
+/**************************************************************************/
 void init_ADC();
 
 
-/************************
- * przelicza odczytana wartosc z adc na natezenie
- *  
- * rozdzielczosc modulu pomiaru pradu wynosi 100A natomiast rozdzielczość ADC 2048, 
- * jednak nasze napiecie referencyjne to 5V a ADC mierzy 0-6,144V,
- *  dlatego realna rozdzielczosc to 1666,67, co mozna policzyc z prostej proporcji:
- *             6,144 = 2048
- *                5  =   x
- *************************/
+/**************************************************************************/
+/*!
+    @brief  Converts voltage measure to Amps. ACS has 100A resolution (-50A - 50A)
+
+    @param measured value [V]
+
+    @return ACS sensor value [A]
+*/
+/**************************************************************************/
 float CalculateAmp(float Measure);
 
 
-/************************
- * przelicza wartosc otrzymana z przetwornika 
- * na zmierzone napiecie, dla przetwornika Grove 5/43 V
-*************************/
+/*!
+    @brief  Converts voltage measure to voltage in electrical system.  
+
+    @param measured value [V]
+
+    @return sensor value [V]
+*/
+/**************************************************************************/
 float CalculateVolt(float Measure);
  
 

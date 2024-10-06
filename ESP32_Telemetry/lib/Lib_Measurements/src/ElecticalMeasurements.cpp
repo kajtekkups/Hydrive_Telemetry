@@ -20,16 +20,11 @@ void AdsNodeInterface::get_messurements(int16_t& voltage, int16_t& current){
   }
 }
 
-// listy dostepnych przetwornikow ADS
-AttinyADC ads[LICZBA_PRZETWORNIKOW];  
-/* poniewaz chcemy, aby pomiary byly przesylane niezaleznie czy wszytkie plytki pomiarowe
-   sa podpiete, potrzebna jest klasa, która bedzie zwracala poprawne warosci (AdsNodeInterface::get_messurements)
-   ads_nodes to lista obiekow tej klasy*/
-AdsNodeInterface ads_objects[LICZBA_PRZETWORNIKOW];  
+// list of ADC converters
+AttinyADC ads[ADC_NUMBER];  
+AdsNodeInterface ads_objects[ADC_NUMBER];  
 
 void init_ADC(){
-
-  /******* aktywuj przetworniki ADC, jeżeli wystąpi problem, zasygnalizuj go diodą ******/
   pinMode(ADC_STATE_LED, OUTPUT);
 
   if (!ads[0].begin(ADS_ADRESS_ZA_OGNIWEM)) {
@@ -70,24 +65,22 @@ void init_ADC(){
 }
 
 
+// Sensor measures current in -50A - 50A range
+// 0A corresponds to half of ADCs reference 
+// voltage (2.5V for 5V reference)
 float CalculateAmp(float Measure_VT){
-  
-  //amperomierz mierzy w zakresie -50 --- 50 A
-  // 0A odpowiada połowie napięcia zasilającego przetwornik ADC (dla 5V będzie to 2.5V)
 
-  float pomiar_znormalizowany = Measure_VT - 2.5; //(NAPIECIE_REFERENCYJNE/2); 
-  pomiar_znormalizowany = pomiar_znormalizowany - BLAD_POMIARU;
+  float normalized_measure = Measure_VT - 2.5;
+  normalized_measure = normalized_measure - MEASUREMENT_ERROR;
   
-  float Amp = pomiar_znormalizowany / ACS758_SENSITIVITY_DEFAULT;
+  float Amp = normalized_measure / ACS758_SENSITIVITY_DEFAULT;
 
   return Amp; 
   }
 
-
+//Voltage divider devides in a 1/10 ratio, there is also constant 8% error 
 float CalculateVolt(float Measure){
   float Volt;
-
-  //dzielnik dzieli w stosunku 1/10, dodatkowo wystepuje staly blad 8%
   Volt = Measure * 10;
   Volt = Volt * 1.11;
 
