@@ -3,7 +3,7 @@
 
 #include <Arduino.h>
 #include "MQTT_Communication.hpp"
-#include "Adafruit_ADS1X15.h"
+#include "AttinyADC.h"
 #include "Pin_Defines.hpp"
 
 /**** stale zwiazane z pomiarami *****/
@@ -24,19 +24,19 @@
 class AdsNodeInterface{
   public:
 
-    void begin(Adafruit_ADS1115* node_ads, uint8_t initialized, uint8_t current_pin, uint8_t voltage_pin);
+    void begin(AttinyADC* node_ads, uint8_t initialized, uint8_t current_pin, uint8_t voltage_pin);
 
     // zbierz pomiary i zwroc w kolejnosci napiecie - prad
     void get_messurements(int16_t& voltage, int16_t& current);
 
   private:
     uint8_t _initialized;
-    Adafruit_ADS1115* _node_ads;
+    AttinyADC* _node_ads;
     uint8_t _current_pin;
     uint8_t _voltage_pin;
 };
 
-extern Adafruit_ADS1115 ads[LICZBA_PRZETWORNIKOW];
+extern AttinyADC ads[LICZBA_PRZETWORNIKOW];
 extern AdsNodeInterface ads_objects[LICZBA_PRZETWORNIKOW];
 
 

@@ -1,7 +1,7 @@
 #include "pomiary_elektryczne.hpp"
 
 
-void AdsNodeInterface::begin(Adafruit_ADS1115* node_ads, uint8_t initialized, uint8_t current_pin, uint8_t voltage_pin){
+void AdsNodeInterface::begin(AttinyADC* node_ads, uint8_t initialized, uint8_t current_pin, uint8_t voltage_pin){
   _node_ads = node_ads; 
   _initialized = initialized;
   _current_pin = current_pin;
@@ -21,7 +21,7 @@ void AdsNodeInterface::get_messurements(int16_t& voltage, int16_t& current){
 }
 
 // listy dostepnych przetwornikow ADS
-Adafruit_ADS1115 ads[LICZBA_PRZETWORNIKOW];  
+AttinyADC ads[LICZBA_PRZETWORNIKOW];  
 /* poniewaz chcemy, aby pomiary byly przesylane niezaleznie czy wszytkie plytki pomiarowe
    sa podpiete, potrzebna jest klasa, która bedzie zwracala poprawne warosci (AdsNodeInterface::get_messurements)
    ads_nodes to lista obiekow tej klasy*/
