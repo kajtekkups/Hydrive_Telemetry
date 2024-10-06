@@ -27,9 +27,9 @@ void loop() {
 
   // if (WiFi.status() != WL_CONNECTED) WIFI_reconnect();
   
-  // Collect_data(); //zbierz pomiary 
+  Collect_data(); //zbierz pomiary 
   // Send_save_data(); //wyslij pomiary na serwer
 
   // hallSensorInstance.loop();
-  delay(100);
+  delay(300);
 }
