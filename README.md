@@ -6,6 +6,7 @@ to the server. Data is visualized on a server or on local PC after configuration
 * [General info](#general-info)
 * [Technologies](#technologies)
 * [Setup](#setup)
+* [Visualization](#visualization)
 
 ## General info
 The primary function of the system is to measure voltage (0-50V) and current (0-50A) simultaneously at multiple points and transmit the data for subsequent visualization. It also measures
@@ -16,3 +17,5 @@ It is based on an ESP32 microcontroller (tested on a firebeetle and ESP32-S2-Sao
 ## Technologies
 	
 ## Setup
+
+## Visualization
