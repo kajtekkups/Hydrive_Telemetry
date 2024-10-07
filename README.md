@@ -33,3 +33,7 @@ In order to use this project:
 7. compile and flash
    
 ## Visualization
+Data can be visualized with Grafana, below is an example data from one of race laps
+![Screenshot 2024-10-07 214928](https://github.com/user-attachments/assets/a02ceb1c-b3e1-45b0-b817-7bf3823edd45)
+
+For more information and instalation instructions contact repository owner
