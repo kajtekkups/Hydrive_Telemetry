@@ -34,6 +34,7 @@ In order to use this project:
    
 ## Visualization
 Data can be visualized with Grafana, below is an example data from one of race laps
-![Screenshot 2024-10-07 214928](https://github.com/user-attachments/assets/a02ceb1c-b3e1-45b0-b817-7bf3823edd45)
+
+![Screenshot 2024-10-07 220504](https://github.com/user-attachments/assets/e9bef0dd-21a6-4d9f-afe3-026344e8db41)
 
 For more information and instalation instructions contact repository owner
