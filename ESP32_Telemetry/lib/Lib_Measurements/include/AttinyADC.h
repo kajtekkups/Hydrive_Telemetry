@@ -16,7 +16,7 @@
 #ifndef __ADS1X15_H__
 #define __ADS1X15_H__
 
-#include <Adafruit_I2CDevice.h>
+#include <Attiny_I2CDevice.h>
 #include <Arduino.h>
 #include <Wire.h>
 
@@ -42,7 +42,7 @@
 class AttinyADC {
 protected:
   // Instance-specific properties
-  Adafruit_I2CDevice *m_i2c_dev; ///< I2C bus device
+  Attiny_I2CDevice *m_i2c_dev; ///< I2C bus device
 
 public:
   bool begin(uint8_t i2c_addr = MASTER_ADDRESS, TwoWire *wire = &Wire);

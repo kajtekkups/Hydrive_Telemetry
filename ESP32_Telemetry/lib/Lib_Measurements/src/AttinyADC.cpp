@@ -42,7 +42,7 @@
 */
 /**************************************************************************/
 bool AttinyADC::begin(uint8_t i2c_addr, TwoWire *wire) {
-  m_i2c_dev = new Adafruit_I2CDevice(i2c_addr, wire);
+  m_i2c_dev = new Attiny_I2CDevice(i2c_addr, wire);
   return m_i2c_dev->begin();
 }
 
