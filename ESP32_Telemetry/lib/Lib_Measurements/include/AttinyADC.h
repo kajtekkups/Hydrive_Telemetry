@@ -55,7 +55,7 @@ public:
 
 private:
   void writeRegister(uint8_t reg, uint8_t value);
-  uint16_t readRegister(uint8_t reg);
+  uint16_t readValue();
   uint8_t buffer[2];
 };
 

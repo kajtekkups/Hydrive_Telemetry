@@ -61,11 +61,6 @@ int16_t AttinyADC::readADC_SingleEnded(uint8_t channel) {
 
   choseChannel(channel);
   delay(10);  // Wait for the conversion to complete
-
-  // Serial.print("ADS");
-  // Serial.print(channel);
-  // Serial.println("utracony");
-
   // Read the conversion results
   return getLastConversionResults();
 }
@@ -81,7 +76,7 @@ int16_t AttinyADC::readADC_SingleEnded(uint8_t channel) {
 /**************************************************************************/
 int16_t AttinyADC::getLastConversionResults() {
   // Read the conversion results
-  return (int16_t)readRegister(REG_POINTER_CONVERT);
+  return (int16_t)readValue();
 }
 
 
@@ -124,7 +119,7 @@ void AttinyADC::choseChannel(uint8_t channel) {
 void AttinyADC::writeRegister(uint8_t reg, uint8_t value) {
   buffer[0] = reg;
   buffer[1] = value;
-  m_i2c_dev->write(buffer, 3);
+  m_i2c_dev->write(buffer, 2);
 }
 
 /**************************************************************************/
@@ -136,10 +131,7 @@ void AttinyADC::writeRegister(uint8_t reg, uint8_t value) {
     @return 16 bit register value read
 */
 /**************************************************************************/
-uint16_t AttinyADC::readRegister(uint8_t reg) {
-  buffer[0] = reg;
-  m_i2c_dev->write(buffer, 1);
+uint16_t AttinyADC::readValue() {
   m_i2c_dev->read(buffer, 2);
-
   return ((buffer[0] << 8) | buffer[1]);
 }
