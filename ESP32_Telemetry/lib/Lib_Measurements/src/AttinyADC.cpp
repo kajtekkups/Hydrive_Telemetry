@@ -96,8 +96,7 @@ int16_t AttinyADC::getLastConversionResults() {
 /**************************************************************************/
 float AttinyADC::computeVolts(int16_t counts) {
   // see data sheet Table 3
-  float fsRange = 5.0f;
-  return counts * (fsRange / ADC_RESOLUTION);
+  return counts * (FS_RANGE / ADC_RESOLUTION);
 }
 
 /**************************************************************************/
@@ -141,5 +140,6 @@ uint16_t AttinyADC::readRegister(uint8_t reg) {
   buffer[0] = reg;
   m_i2c_dev->write(buffer, 1);
   m_i2c_dev->read(buffer, 2);
+
   return ((buffer[0] << 8) | buffer[1]);
 }

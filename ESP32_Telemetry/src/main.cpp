@@ -28,8 +28,8 @@ void loop() {
   // if (WiFi.status() != WL_CONNECTED) WIFI_reconnect();
   
   Collect_data();
-  // Send_save_data(); //send data to the server
+  Send_save_data(); //send data to the server
 
   // hallSensorInstance.loop();
-  delay(100);
+  delay(2000);
 }

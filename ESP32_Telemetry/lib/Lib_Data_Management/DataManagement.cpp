@@ -15,6 +15,7 @@ void Collect_data(){
     measure_data.current_measurement[i] = CalculateAmp(ads[i].computeVolts(results_I));  
   }
   
+  
   measure_data.velocity = hallSensorInstance.currentVelocity;
 
   measure_data.measurement_time = millis() - measure_data.time;
@@ -42,11 +43,11 @@ void Send_save_data(){
   char package[400];
   serializeJson(doc, package);
 
-
+  Serial.println(package);
   //save data
-  micro_sd_file.appendFile(package);
+  // micro_sd_file.appendFile(package);
 
 
-  //send data
-  publish_MQTT_message(MQTT_PUBLISH_TOPIC, package);
+  // //send data
+  // publish_MQTT_message(MQTT_PUBLISH_TOPIC, package);
 }

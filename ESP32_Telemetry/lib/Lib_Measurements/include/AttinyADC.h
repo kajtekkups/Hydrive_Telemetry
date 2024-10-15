@@ -29,7 +29,8 @@
 /*=========================================================================*/
 
 
-#define ADC_RESOLUTION 4096.0f
+#define ADC_RESOLUTION 1024.0f
+#define FS_RANGE 5.0f
 #define MASTER_ADDRESS (0x50) /// 1010 000
 
 
