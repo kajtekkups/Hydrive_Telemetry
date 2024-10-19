@@ -1,13 +1,20 @@
 #include <Wire.h>
 
-#define MODULE_ID 0x48
+#include <math.h>
+#define CLK_PER 3333333ul // 20 MHz/6 = 3.333333 MHz
+#define TIMEBASE_VALUE ((uint8_t) ceil(CLK_PER*0.000001))
+
+
+
+#define MODULE_ID 0x49
 #define LED 5
-#define ADC_VOLTAGE_CHANNEL A2
-#define ADC_CURRENT_CHANNEL A3
+#define ADC_VOLTAGE_CHANNEL A5
+#define ADC_CURRENT_CHANNEL A4
 
 
 #define REG_POINTER_CONFIG (0x01)    ///< Configuration
 #define REG_POINTER_CONVERT (0x00)   ///< Conversion
+
 
 uint16_t ADC_value = 0;
 uint8_t ADC_channel_number = 1;
@@ -25,6 +32,8 @@ void setup()
   Wire.onRequest(sendEventInterrupt); 
 
   pinMode(LED, OUTPUT);
+  digitalWrite(LED, HIGH);
+  delay(200);
   digitalWrite(LED, LOW);
 
 #if defined(__AVR_ATmega328P__)
@@ -37,21 +46,23 @@ void setup()
 
 void loop()
 {
-  int analog_temporary_read = 0;
+  uint16_t analog_temporary_read = 0;
 
   if(ADC_channel_number == 0){
-    analog_temporary_read = analogRead(ADC_CURRENT_CHANNEL);
+    analog_temporary_read = (uint16_t)analogRead(ADC_CURRENT_CHANNEL); 
+    delay(5);
   }else if (ADC_channel_number == 1) {
-    analog_temporary_read = analogRead(ADC_VOLTAGE_CHANNEL);
+    analog_temporary_read = (uint16_t)analogRead(ADC_VOLTAGE_CHANNEL);
+    delay(5);
   }
   
-  ADC_value = (uint16_t)analog_temporary_read;
+  ADC_value = analog_temporary_read;
 }
 
 
 //specify channel for ADC meassurement
 void configEventInterrupt(int message_lenght){
-digitalWrite(LED, HIGH); 
+
 
 #if defined(__AVR_ATmega328P__)
   Serial.println("on receive:");
@@ -80,7 +91,10 @@ void sendEventInterrupt()
   send_buffer[0] = (ADC_value >> 8) & 0xFF;
   send_buffer[1] = ADC_value & 0xFF; 
 
+#if defined(__AVR_ATmega328P__)
   Serial.println(send_buffer[0]);
   Serial.println(send_buffer[1]);
+#endif
+
   Wire.write(send_buffer, 2);
 }
