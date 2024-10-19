@@ -23,7 +23,7 @@
 /*=========================================================================
     POINTER REGISTER
     -----------------------------------------------------------------------*/
-#define REG_POINTER_MASK (0x03)      ///< Point mask
+#define REG_POINTER_CONV_VALUE (0x03)      ///< ADC Conversion value
 #define REG_POINTER_CONVERT (0x00)   ///< Conversion
 #define REG_POINTER_CONFIG (0x01)    ///< Configuration
 /*=========================================================================*/
@@ -48,14 +48,15 @@ public:
   bool begin(uint8_t i2c_addr = MASTER_ADDRESS, TwoWire *wire = &Wire);
   
   int16_t readADC_SingleEnded(uint8_t channel);
-  void choseChannel(uint8_t mux);
-  int16_t getLastConversionResults();
+  uint8_t choseChannel(uint8_t mux);
+  uint8_t conversionComplete();
+  int16_t getLastConversionResults(uint8_t channel);
 
   float computeVolts(int16_t counts);
 
 private:
   void writeRegister(uint8_t reg, uint8_t value);
-  uint16_t readValue();
+  uint16_t readRegister(uint8_t reg);
   uint8_t buffer[2];
 };
 

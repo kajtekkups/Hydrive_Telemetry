@@ -30,6 +30,9 @@
 /**************************************************************************/
 #include "AttinyADC.h"
 
+#define CONVERSION_NOT_COMPLETE 0
+#define CONVERSION_COMPLETE 1
+
 
 /**************************************************************************/
 /*!
@@ -59,10 +62,8 @@ bool AttinyADC::begin(uint8_t i2c_addr, TwoWire *wire) {
 /**************************************************************************/
 int16_t AttinyADC::readADC_SingleEnded(uint8_t channel) {
 
-  choseChannel(channel);
-  delay(10);  // Wait for the conversion to complete
-  // Read the conversion results
-  return getLastConversionResults();
+  if(!choseChannel(channel)) return CONVERSION_NOT_COMPLETE;
+  return getLastConversionResults(channel);
 }
 
 
@@ -74,9 +75,9 @@ int16_t AttinyADC::readADC_SingleEnded(uint8_t channel) {
     @return the last ADC reading
 */
 /**************************************************************************/
-int16_t AttinyADC::getLastConversionResults() {
+int16_t AttinyADC::getLastConversionResults(uint8_t channel) {
   // Read the conversion results
-  return (int16_t)readValue();
+  return (int16_t)readRegister(REG_POINTER_CONV_VALUE);
 }
 
 
@@ -101,12 +102,33 @@ float AttinyADC::computeVolts(int16_t counts) {
     @param channel value
 */
 /**************************************************************************/
-void AttinyADC::choseChannel(uint8_t channel) {
-  // Write config register to the ADC
+uint8_t AttinyADC::choseChannel(uint8_t channel) {
+  // Write config register to the ADC module
   writeRegister(REG_POINTER_CONFIG, channel);
+  delay(1);
+  uint8_t i = 0;
+  while(!conversionComplete()){
+    if(i == 5) break;
+    i++;
+    delay(1);
+  }
+
+  if(i == 5){
+    return CONVERSION_NOT_COMPLETE;
+  }  else{
+    return CONVERSION_COMPLETE;
+  }
 }
 
 
+/**************************************************************************/
+/*!
+    @brief  checks if attiny ADC conversation is complete
+*/
+/**************************************************************************/
+uint8_t AttinyADC::conversionComplete(){
+  return readRegister(REG_POINTER_CONVERT);
+}
 
 /**************************************************************************/
 /*!
@@ -131,7 +153,9 @@ void AttinyADC::writeRegister(uint8_t reg, uint8_t value) {
     @return 16 bit register value read
 */
 /**************************************************************************/
-uint16_t AttinyADC::readValue() {
+uint16_t AttinyADC::readRegister(uint8_t reg) {
+  buffer[0] = reg;
+  m_i2c_dev->write(buffer, 1);
   m_i2c_dev->read(buffer, 2);
   return ((buffer[0] << 8) | buffer[1]);
 }
