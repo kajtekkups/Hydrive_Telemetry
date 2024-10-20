@@ -5,14 +5,14 @@ void Collect_data(){
 
   measure_data.time = millis();
 
-  int16_t results_vt;
-  int16_t results_I;
+  int16_t voltage_value_vt;
+  int16_t voltage_value_I;
 
-  for(uint8_t i = 0; i < ADC_NUMBER; i++){    
-    ads_objects[i].get_messurements(results_vt, results_I);
+  for(uint8_t i = 0; i < ADC_number; i++){    
+    ads[i].get_messurements(voltage_value_vt, voltage_value_I);
     
-    measure_data.voltage_measurement[i] = CalculateVolt(ads[i].computeVolts(results_vt));
-    measure_data.current_measurement[i] = CalculateAmp(ads[i].computeVolts(results_I));  
+    measure_data.voltage_measurement[i] = CalculateVolt(voltage_value_vt);
+    measure_data.current_measurement[i] = CalculateAmp(voltage_value_I);  
   }
   
   
@@ -28,7 +28,7 @@ void Send_save_data(){
   StaticJsonDocument<400> doc; 
 
   //prepare data for transmition
-  for(uint8_t i; i < ADC_NUMBER; i++){
+  for(uint8_t i; i < ADC_number; i++){
     doc["pomiar_VT" + std::to_string(i)] = measure_data.voltage_measurement[i]; 
     doc["pomiar_I" + std::to_string(i)] = measure_data.current_measurement[i];
   }

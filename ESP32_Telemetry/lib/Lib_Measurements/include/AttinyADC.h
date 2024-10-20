@@ -45,19 +45,21 @@ protected:
   Attiny_I2CDevice *m_i2c_dev; ///< I2C bus device
 
 public:
-  bool begin(uint8_t i2c_addr = MASTER_ADDRESS, TwoWire *wire = &Wire);
+  bool begin(uint8_t i2c_addr, TwoWire *wire = &Wire);
   
   int16_t readADC_SingleEnded(uint8_t channel);
   uint8_t choseChannel(uint8_t mux);
   uint8_t conversionComplete();
   int16_t getLastConversionResults(uint8_t channel);
 
+  void get_messurements(int16_t& voltage, int16_t& current);
   float computeVolts(int16_t counts);
 
 private:
   void writeRegister(uint8_t reg, uint8_t value);
   uint16_t readRegister(uint8_t reg);
   uint8_t buffer[2];
+  bool initialized;
 };
 
 

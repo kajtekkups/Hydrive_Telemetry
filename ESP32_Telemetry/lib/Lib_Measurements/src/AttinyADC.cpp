@@ -29,6 +29,7 @@
 */
 /**************************************************************************/
 #include "AttinyADC.h"
+#include "Pin_Defines.hpp"
 
 #define CONVERSION_NOT_COMPLETE 0
 #define CONVERSION_COMPLETE 1
@@ -46,7 +47,12 @@
 /**************************************************************************/
 bool AttinyADC::begin(uint8_t i2c_addr, TwoWire *wire) {
   m_i2c_dev = new Attiny_I2CDevice(i2c_addr, wire);
-  return m_i2c_dev->begin();
+  if(m_i2c_dev->begin()){
+    initialized = true;
+  }else{
+    initialized = false;
+  }
+  return initialized;
 }
 
 
@@ -94,6 +100,26 @@ float AttinyADC::computeVolts(int16_t counts) {
   // see data sheet Table 3
   return counts * (FS_RANGE / ADC_RESOLUTION);
 }
+
+
+/**************************************************************************/
+/*!
+    @brief  Gets messurements of current and voltage from the module
+
+    @param referenses to return value variables
+*/
+/**************************************************************************/
+void AttinyADC::get_messurements(int16_t& voltage, int16_t& current){
+  if(initialized){
+    voltage = computeVolts(readADC_SingleEnded(ADS_VOLT));
+    current = computeVolts(readADC_SingleEnded(ADS_CURRENT));
+  }
+  else{
+    voltage = 0;
+    current = 0;
+  }
+}
+
 
 /**************************************************************************/
 /*!

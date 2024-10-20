@@ -16,34 +16,24 @@
 
 
 /*=========================================================================
-    Number of ADC modules
+    ADC modules management
     -----------------------------------------------------------------------*/
-#define ADC_NUMBER 4  //if changeing this function, change init_ADC function
-/*=========================================================================*/
+#define ADS_ADRESS_BEHIND_CELL 0x48 // addr floating or gnd
+#define ADS_ADRESS_BEFORE_CONVERTERS 0x4a //addr to sda
+#define ADS_ADRESS_AFTER_CONVERTERS 0x49 // addr to vdd
+#define ADS_ADRESS_SUPERCAPACITORS 0x4b // addr to scl
 
-#define ADS_ADRESS_ZA_OGNIWEM 0x48 // addr floating or gnd
-#define ADS_ADRESS_PRZED_PRZETWORNICAMI 0x4a //addr to sda
-#define ADS_ADRESS_ZA_PRZETWORNICAMI 0x49 // addr to vdd
-#define ADS_ADRESS_KONDENSATORY 0x4b // addr to scl
-
-
-class AdsNodeInterface{
-  public:
-
-    void begin(AttinyADC* node_ads, uint8_t initialized, uint8_t current_pin, uint8_t voltage_pin);
-
-    void get_messurements(int16_t& voltage, int16_t& current);
-
-  private:
-    uint8_t _initialized;
-    AttinyADC* _node_ads;
-    uint8_t _current_pin;
-    uint8_t _voltage_pin;
+constexpr uint16_t adresses[] = {
+    ADS_ADRESS_BEHIND_CELL,
+    ADS_ADRESS_BEFORE_CONVERTERS,
+    ADS_ADRESS_AFTER_CONVERTERS,
+    ADS_ADRESS_SUPERCAPACITORS
 };
 
-extern AttinyADC ads[ADC_NUMBER];
-extern AdsNodeInterface ads_objects[ADC_NUMBER];
+constexpr uint16_t ADC_number = sizeof(adresses)/sizeof(adresses[0]);
 
+extern AttinyADC ads[ADC_number];
+/*=========================================================================*/
 
 /**************************************************************************/
 /*!

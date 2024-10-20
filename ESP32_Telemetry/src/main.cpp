@@ -18,7 +18,6 @@ void setup() {
   init_ADC();
 
   // hallSensorInstance.setup();
-
 }
 
 void loop() {

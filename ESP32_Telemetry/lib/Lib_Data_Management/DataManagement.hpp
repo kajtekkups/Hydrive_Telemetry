@@ -9,8 +9,8 @@
 struct {
   unsigned long time;
   unsigned long measurement_time;
-  float voltage_measurement[ADC_NUMBER];
-  float current_measurement[ADC_NUMBER];
+  float voltage_measurement[ADC_number];
+  float current_measurement[ADC_number];
   float velocity;
 
 } measure_data;
