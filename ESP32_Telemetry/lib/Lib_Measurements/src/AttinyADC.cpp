@@ -83,22 +83,7 @@ int16_t AttinyADC::readADC_SingleEnded(uint8_t channel) {
 /**************************************************************************/
 int16_t AttinyADC::getLastConversionResults(uint8_t channel) {
   // Read the conversion results
-  return (int16_t)readRegister(REG_POINTER_CONV_VALUE);
-}
-
-
-/**************************************************************************/
-/*!
-    @brief  Converts ADC reading into volts.
-
-    @param counts the ADC reading in raw counts
-
-    @return the ADC reading in volts
-*/
-/**************************************************************************/
-float AttinyADC::computeVolts(int16_t counts) {
-  // see data sheet Table 3
-  return counts * (FS_RANGE / ADC_RESOLUTION);
+  return readRegister(REG_POINTER_CONV_VALUE);
 }
 
 
@@ -111,8 +96,8 @@ float AttinyADC::computeVolts(int16_t counts) {
 /**************************************************************************/
 void AttinyADC::get_messurements(int16_t& voltage, int16_t& current){
   if(initialized){
-    voltage = computeVolts(readADC_SingleEnded(ADS_VOLT));
-    current = computeVolts(readADC_SingleEnded(ADS_CURRENT));
+    voltage = readADC_SingleEnded(ADS_VOLT);
+    current = readADC_SingleEnded(ADS_CURRENT);
   }
   else{
     voltage = 0;

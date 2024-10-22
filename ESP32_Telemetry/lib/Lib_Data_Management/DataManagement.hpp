@@ -15,6 +15,8 @@ struct {
 
 } measure_data;
 
+float computeVolts(int16_t counts);
+
 
 /**** collects data and saces it to measure_data structure*****/
 void Collect_data();

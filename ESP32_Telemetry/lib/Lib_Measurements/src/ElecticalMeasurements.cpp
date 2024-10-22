@@ -32,8 +32,7 @@ float CalculateAmp(float Measure_VT){
 //Voltage divider devides in a 1/10 ratio, there is also constant 8% error 
 float CalculateVolt(float Measure){
   float Volt;
-  Volt = Measure * 10;
-  Volt = Volt * 1.11;
+  Volt = Measure * 10.0;
 
   return Volt;
 }

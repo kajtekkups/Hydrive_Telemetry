@@ -53,7 +53,6 @@ public:
   int16_t getLastConversionResults(uint8_t channel);
 
   void get_messurements(int16_t& voltage, int16_t& current);
-  float computeVolts(int16_t counts);
 
 private:
   void writeRegister(uint8_t reg, uint8_t value);

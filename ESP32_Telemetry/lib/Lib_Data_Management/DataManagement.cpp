@@ -1,6 +1,21 @@
 #include "DataManagement.hpp"
 
 
+/**************************************************************************/
+/*!
+    @brief  Converts ADC reading into volts.
+
+    @param counts the ADC reading in raw counts
+
+    @return the ADC reading in volts
+*/
+/**************************************************************************/
+float computeVolts(int16_t counts) {
+  // see data sheet Table 3
+  return ((float)counts) * (FS_RANGE / ADC_RESOLUTION);
+}
+
+
 void Collect_data(){
 
   measure_data.time = millis();
@@ -10,9 +25,10 @@ void Collect_data(){
 
   for(uint8_t i = 0; i < ADC_number; i++){    
     ads[i].get_messurements(voltage_value_vt, voltage_value_I);
-    
-    measure_data.voltage_measurement[i] = CalculateVolt(voltage_value_vt);
-    measure_data.current_measurement[i] = CalculateAmp(voltage_value_I);  
+    float temp = computeVolts(voltage_value_vt);
+    float temp1 = computeVolts(voltage_value_I);
+    measure_data.voltage_measurement[i] = CalculateVolt(temp);
+    measure_data.current_measurement[i] = CalculateAmp(temp1);  
   }
   
   
