@@ -2,3 +2,5 @@
 .idea/
 
 ESP32_Telemetry/.vscode/settings.json
+ESP32_Telemetry/lib/Lib_Data_Management/ESP32_Telemetry.code-workspace
+Mesurement_module/
