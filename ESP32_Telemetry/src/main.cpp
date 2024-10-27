@@ -3,7 +3,7 @@
 #include "ElecticalMeasurements.hpp"
 #include "MQTT_Communication.hpp"
 #include "Lib_microSD.hpp"
-
+#include "GNSS.hpp"
 #include "DataManagement.hpp"
 
 void setup() {
@@ -14,6 +14,8 @@ void setup() {
   // establish_mqtt_connection();
   
   // micro_sd_file.begin();
+
+  GPS_init();
 
   init_ADC();
 
@@ -26,9 +28,10 @@ void loop() {
   // if (!MQTT_client.connected()) MQTT_reconnect(); // check if MQTT client is connected
 
   // if (WiFi.status() != WL_CONNECTED) WIFI_reconnect();
+  GPS_update_data();
   
   Collect_data();
-  // Send_save_data(); //send data to the server
+  Send_save_data(); //send data to the server
 
   // hallSensorInstance.loop();
   delay(100);

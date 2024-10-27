@@ -18,7 +18,8 @@ void Collect_data(){
   measure_data.velocity = hallSensorInstance.currentVelocity;
 
   measure_data.measurement_time = millis() - measure_data.time;
-  
+
+  GPS_read_data(measure_data.GPS_speed, measure_data.latitude, measure_data.longitude);
 }
 
 
@@ -34,19 +35,28 @@ void Send_save_data(){
 
   doc["predkosc"] = measure_data.velocity;
 
+  doc["GPS_speed"] = measure_data.GPS_speed;
+
+  String temp_high_precision_latitude = String(measure_data.latitude, 10);
+  doc["latitude"] = temp_high_precision_latitude;
+  String temp_high_precision_longitude = String(measure_data.longitude, 10);
+  doc["longitude"] =  temp_high_precision_longitude;
+
   doc["czas_pomiaru"] = measure_data.measurement_time;
 
   doc["time_ms"] = measure_data.time;
+
 
   //convert data
   char package[400];
   serializeJson(doc, package);
 
-
+  Serial.print("");
+  Serial.println(package);
   //save data
-  micro_sd_file.appendFile(package);
+  // micro_sd_file.appendFile(package);
 
 
   //send data
-  publish_MQTT_message(MQTT_PUBLISH_TOPIC, package);
+  // publish_MQTT_message(MQTT_PUBLISH_TOPIC, package);
 }
