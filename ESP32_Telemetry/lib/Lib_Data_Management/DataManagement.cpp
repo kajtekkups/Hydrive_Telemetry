@@ -54,9 +54,9 @@ void Send_save_data(){
   Serial.print("");
   Serial.println(package);
   //save data
-  // micro_sd_file.appendFile(package);
+  micro_sd_file.appendFile(package);
 
 
   //send data
-  // publish_MQTT_message(MQTT_PUBLISH_TOPIC, package);
+  publish_MQTT_message(MQTT_PUBLISH_TOPIC, package);
 }

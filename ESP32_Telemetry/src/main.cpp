@@ -11,23 +11,23 @@ void setup() {
   Serial.begin(9600);
   Serial.println("PC Serial connection established");
 
-  // establish_mqtt_connection();
+  establish_mqtt_connection();
   
-  // micro_sd_file.begin();
+  micro_sd_file.begin();
 
   GPS_init();
 
   init_ADC();
 
-  // hallSensorInstance.setup();
+  hallSensorInstance.setup();
 
 }
 
 void loop() {
 
-  // if (!MQTT_client.connected()) MQTT_reconnect(); // check if MQTT client is connected
+  if (!MQTT_client.connected()) MQTT_reconnect(); // check if MQTT client is connected
 
-  // if (WiFi.status() != WL_CONNECTED) WIFI_reconnect();
+  if (WiFi.status() != WL_CONNECTED) WIFI_reconnect();
   GPS_update_data();
   
   Collect_data();
