@@ -63,7 +63,7 @@ void setup()
   pinMode(LED, OUTPUT);
   digitalWrite(LED, HIGH);
   delay(200);
-  digitalWrite(LED, LOW);
+  // digitalWrite(LED, LOW);
 
 #if defined(__AVR_ATmega328P__)
   Serial.begin(9600);           // start serial for output

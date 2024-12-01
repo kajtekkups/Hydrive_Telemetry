@@ -10,24 +10,24 @@ const float WHEEL_CIRCUMFERENCE = 1.4444; //[m]
 class HallSensor {
 public:
     HallSensor();
-    void setup();
+    void begin();
     void loop();
 
-    float currentVelocity;
+    float current_velocity;
     
 private:
     static void addRotationSensor();
     void calculateVelocity();
 
 
-    static volatile long rotationsSensor1;
-    static volatile long rotationsSensor2;
-    static unsigned long interruptTime;
+    static volatile long rotation_sensor1;
+    static volatile long rotations_sensor2;
+    static unsigned long interrupt_time;
 
-    unsigned long lastVelocityMeasure;
-    unsigned long measureTime;
+    unsigned long last_velocity_measure;
+    unsigned long measure_time;
 };
 
-extern HallSensor hallSensorInstance;
+extern HallSensor hall_sensor_instance;
 
 #endif

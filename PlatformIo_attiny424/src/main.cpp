@@ -30,20 +30,54 @@ void init_ADC0() {
      * target highest speed that doesn't exceed that and 16 ADC clocks sample
      * duration. */ 
 
-    pADC->CTRLB  = ADC_PRESC_DIV2_gc;  //F_CPU = 1000000UL  1 MHz / 2 = 500 kHz
-                             
-    pADC->CTRLE = 15; // 15.5 without PGA, 16 with PGA, corresponding to 7.75 or 8 us.
-    pADC->CTRLA = ADC_ENABLE_bm | ADC_LOWLAT_bm;
+
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////
+//DO TESTOW
+//////////////////////////////////////////////////////////////////////////////////////////
+    //F_CPU = 1000000UL  1 MHz / 2 = 500 kHz
+    pADC->CTRLB  = ADC_PRESC_DIV2_gc;  
+
+    //F_CPU = 1000000UL  1 MHz / 4 = 250 kHz
+    pADC->CTRLB  = ADC_PRESC_DIV4_gc;  
+//////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////
+    // external voltage reference
+    pADC->CTRLC = TIMEBASE_1US | ADC_REFSEL_VREFA_gc; 
+
+    // VDD voltage reference
+    // pADC->CTRLC = TIMEBASE_1US | ADC_REFSEL_VDD_gc; 
+//////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////
+
+    pADC->COMMAND = ADC_MODE_SINGLE_12BIT_gc; 
+    // pADC->COMMAND = ADC_MODE_SINGLE_8BIT_gc;
+//////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////
+
+    // pADC->PGACTRL = ADC_PGABIASSEL_3_4X_gc | ADC_ADCPGASAMPDUR_15CLK_gc;
+
+//////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+    // 15.5 without PGA, 16 with PGA, corresponding to 7.75 or 8 us.                             
+    pADC->CTRLE = 15; 
+    
     /* Default low latency mode on
      * Users can turn it off if they care about power consumption while ADC is on
-     * and chip is awake, since these parts don't have the perverse ADC-left-on
-     * behavior of classic AVRs. */
-    pADC->CTRLC = TIMEBASE_1US; // defined in Arduino.h.
-    pADC->PGACTRL = ADC_PGABIASSEL_3_4X_gc | ADC_ADCPGASAMPDUR_15CLK_gc;
-    /* Note that we don't *enable* it automatically in init().
-     * 3/4th bias is good up to 4 MHz CLK_ADC, 15 ADC Clocks to sample the PGA
-     * up to 5 MHz, so within the regime of speeds that have to be compatible
-     * with internal references, we are in the clear there. */
+     * and chip is awake */
+    pADC->CTRLA = ADC_ENABLE_bm | ADC_LOWLAT_bm;
+
+    
+    // pADC->CTRLF; number of samples and free-running mode
 }
 
 void onReceiveFunction(int message_lenght);
@@ -63,7 +97,7 @@ void setup()
   pinMode(LED, OUTPUT);
   digitalWrite(LED, HIGH);
   delay(200);
-  digitalWrite(LED, LOW);
+  // digitalWrite(LED, LOW);
 
 #if defined(__AVR_ATmega328P__)
   Serial.begin(9600);           // start serial for output

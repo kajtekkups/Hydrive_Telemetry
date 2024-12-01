@@ -24,15 +24,15 @@ void Collect_data(){
   int16_t voltage_value_I;
 
   for(uint8_t i = 0; i < ADC_number; i++){    
-    ads[i].get_messurements(voltage_value_vt, voltage_value_I);
+    ads[i].getMessurements(voltage_value_vt, voltage_value_I);
     float temp = computeVolts(voltage_value_vt);
     float temp1 = computeVolts(voltage_value_I);
-    measure_data.voltage_measurement[i] = CalculateVolt(temp);
-    measure_data.current_measurement[i] = CalculateAmp(temp1);  
+    measure_data.voltage_measurement[i] = electrical_meassurements_instance.calculateVolt(temp);
+    measure_data.current_measurement[i] = electrical_meassurements_instance.calculateAmp(temp1);  
   }
   
   
-  measure_data.velocity = hallSensorInstance.currentVelocity;
+  measure_data.velocity = hall_sensor_instance.current_velocity;
 
   measure_data.measurement_time = millis() - measure_data.time;
   
@@ -65,5 +65,5 @@ void Send_save_data(){
 
 
   // //send data
-  // publish_MQTT_message(MQTT_PUBLISH_TOPIC, package);
+  server_communication_instance.publishMqttMessage(package);
 }

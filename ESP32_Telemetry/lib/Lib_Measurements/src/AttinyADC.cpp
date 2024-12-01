@@ -66,7 +66,7 @@ bool AttinyADC::begin(uint8_t i2c_addr, TwoWire *wire) {
     @return the ADC reading
 */
 /**************************************************************************/
-int16_t AttinyADC::readADC_SingleEnded(uint8_t channel) {
+int16_t AttinyADC::readAdcSingleEnded(uint8_t channel) {
 
   if(!choseChannel(channel)) return CONVERSION_NOT_COMPLETE;
   return getLastConversionResults(channel);
@@ -94,10 +94,10 @@ int16_t AttinyADC::getLastConversionResults(uint8_t channel) {
     @param referenses to return value variables
 */
 /**************************************************************************/
-void AttinyADC::get_messurements(int16_t& voltage, int16_t& current){
+void AttinyADC::getMessurements(int16_t& voltage, int16_t& current){
   if(initialized){
-    voltage = readADC_SingleEnded(ADS_VOLT);
-    current = readADC_SingleEnded(ADS_CURRENT);
+    voltage = readAdcSingleEnded(ADS_VOLT);
+    current = readAdcSingleEnded(ADS_CURRENT);
   }
   else{
     voltage = 0;

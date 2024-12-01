@@ -3,7 +3,15 @@
 // list of ADC converters
 AttinyADC ads[ADC_number];  
 
-void init_ADC(){
+ElectricalMeassurements electrical_meassurements_instance;
+
+/**************************************************************************/
+/*!
+    @brief  Initialize all I2C ADC converters
+
+*/
+/**************************************************************************/
+void ElectricalMeassurements::begin(){
   pinMode(ADC_STATE_LED, OUTPUT);
 
   for(uint32_t i = 0; i < ADC_number; i++){
@@ -16,10 +24,19 @@ void init_ADC(){
 }
 
 
+/**************************************************************************/
+/*!
+    @brief  Converts voltage measure to Amps. ACS has 100A resolution (-50A - 50A)
+
+    @param measured value [V]
+
+    @return ACS sensor value [A]
+*/
+/**************************************************************************/
 // Sensor measures current in -50A - 50A range
 // 0A corresponds to half of ADCs reference 
 // voltage (2.5V for 5V reference)
-float CalculateAmp(float Measure_VT){
+float ElectricalMeassurements::calculateAmp(float Measure_VT){
 
   float normalized_measure = Measure_VT - 2.5;
   normalized_measure = normalized_measure - MEASUREMENT_ERROR;
@@ -29,8 +46,17 @@ float CalculateAmp(float Measure_VT){
   return Amp; 
   }
 
+
+/*!
+    @brief  Converts voltage measure to voltage in electrical system.  
+
+    @param measured value [V]
+
+    @return sensor value [V]
+*/
+/**************************************************************************/
 //Voltage divider devides in a 1/10 ratio, there is also constant 8% error 
-float CalculateVolt(float Measure){
+float ElectricalMeassurements::calculateVolt(float Measure){
   float Volt;
   Volt = Measure * 10.0;
 

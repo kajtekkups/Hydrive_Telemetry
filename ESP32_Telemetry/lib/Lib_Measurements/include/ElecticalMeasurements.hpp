@@ -35,37 +35,15 @@ constexpr uint16_t ADC_number = sizeof(adresses)/sizeof(adresses[0]);
 extern AttinyADC ads[ADC_number];
 /*=========================================================================*/
 
-/**************************************************************************/
-/*!
-    @brief  Initialize all I2C ADC converters
 
-*/
-/**************************************************************************/
-void init_ADC();
+class ElectricalMeassurements{
 
+public:
+    void begin();
+    float calculateAmp(float Measure);
+    float calculateVolt(float Measure);
+};
 
-/**************************************************************************/
-/*!
-    @brief  Converts voltage measure to Amps. ACS has 100A resolution (-50A - 50A)
-
-    @param measured value [V]
-
-    @return ACS sensor value [A]
-*/
-/**************************************************************************/
-float CalculateAmp(float Measure);
-
-
-/*!
-    @brief  Converts voltage measure to voltage in electrical system.  
-
-    @param measured value [V]
-
-    @return sensor value [V]
-*/
-/**************************************************************************/
-float CalculateVolt(float Measure);
- 
-
+extern ElectricalMeassurements electrical_meassurements_instance;
 
 #endif

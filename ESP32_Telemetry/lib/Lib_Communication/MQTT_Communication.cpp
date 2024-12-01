@@ -1,6 +1,9 @@
 #include "MQTT_Communication.hpp"
 
 
+ServerCommunication server_communication_instance;
+
+
 /****** root certificate *********/
 static const char *root_ca PROGMEM = R"EOF(
 -----BEGIN CERTIFICATE-----
@@ -43,13 +46,23 @@ WiFiClientSecure espClient;
 PubSubClient MQTT_client(espClient);
 
 
-void setup_wifi() {
+
+void ServerCommunication::begin(){
+  setupWifi();
+  espClient.setCACert(root_ca);
+  MQTT_client.setServer(mqtt_server, mqtt_port);
+  MQTT_client.setBufferSize(400);
+}
+
+
+
+void ServerCommunication::setupWifi() {
   delay(10);
   Serial.print("\nConnecting to ");
-  Serial.println(WIFI_SSID);
+  Serial.println(wifi_ssid);
 
   WiFi.mode(WIFI_STA);
-  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+  WiFi.begin(wifi_ssid, wifi_password);
 
   pinMode(WIFI_STATE_LED, OUTPUT);
   uint8_t tries = 0;
@@ -75,7 +88,7 @@ void setup_wifi() {
 }
 
 
-void MQTT_reconnect() {
+void ServerCommunication::mqttReconnect() {
   // Loop until we're reconnected
   pinMode(MQTT_STATE_LED, OUTPUT);
 
@@ -97,14 +110,14 @@ void MQTT_reconnect() {
 }
 
 
-void WIFI_reconnect(){
+void ServerCommunication::wifiReconnect(){
  
   Serial.print("Reconnecting to: ");
-  Serial.println(WIFI_SSID);
+  Serial.println(wifi_ssid);
 
   WiFi.disconnect();
   WiFi.mode(WIFI_STA);
-  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+  WiFi.begin(wifi_ssid, wifi_password);
 
   pinMode(WIFI_STATE_LED, OUTPUT);
   if (WiFi.status() != WL_CONNECTED) {
@@ -117,9 +130,9 @@ void WIFI_reconnect(){
 }
 
 
-  void publish_MQTT_message(const char* topic, String payload){
-    if (MQTT_client.publish(topic, payload.c_str(), true)){
-      Serial.println("Message publised ["+String(topic)+"]: "+payload);
+void ServerCommunication::publishMqttMessage(String payload){
+    if (MQTT_client.publish(mqtt_publish_topic, payload.c_str(), true)){
+      Serial.println("Message publised ["+String(mqtt_publish_topic)+"]: "+payload);
     }
     else{
       Serial.println("Failed to publish MQTT message");
@@ -128,9 +141,4 @@ void WIFI_reconnect(){
 }
 
 
-void establish_mqtt_connection(){
-  setup_wifi();
-  espClient.setCACert(root_ca);
-  MQTT_client.setServer(mqtt_server, mqtt_port);
-  MQTT_client.setBufferSize(400);
-}
+

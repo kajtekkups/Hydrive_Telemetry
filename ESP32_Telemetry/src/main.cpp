@@ -11,24 +11,24 @@ void setup() {
   Serial.begin(9600);
   Serial.println("PC Serial connection established");
 
-  // establish_mqtt_connection();
+  server_communication_instance.begin();
   
   // micro_sd_file.begin();
 
-  init_ADC();
+  electrical_meassurements_instance.begin();
 
-  // hallSensorInstance.setup();
+  // hall_sensor_instance.setup();
 }
 
 void loop() {
 
-  // if (!MQTT_client.connected()) MQTT_reconnect(); // check if MQTT client is connected
+  if (!MQTT_client.connected()) server_communication_instance.mqttReconnect(); // check if MQTT client is connected
 
-  // if (WiFi.status() != WL_CONNECTED) WIFI_reconnect();
+  if (WiFi.status() != WL_CONNECTED) server_communication_instance.wifiReconnect();
   
   Collect_data();
   Send_save_data(); //send data to the server
 
-  // hallSensorInstance.loop();
-  delay(2000);
+  // hall_sensor_instance.loop();
+  
 }
