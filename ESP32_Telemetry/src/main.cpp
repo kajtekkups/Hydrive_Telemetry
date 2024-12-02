@@ -3,7 +3,7 @@
 #include "ElecticalMeasurements.hpp"
 #include "MQTT_Communication.hpp"
 #include "Lib_microSD.hpp"
-
+#include "GNSS.hpp"
 #include "DataManagement.hpp"
 
 void setup() {
@@ -13,7 +13,7 @@ void setup() {
 
   server_communication_instance.begin();
   
-  // micro_sd_file.begin();
+  micro_sd_file.begin();
 
   electrical_meassurements_instance.begin();
 
