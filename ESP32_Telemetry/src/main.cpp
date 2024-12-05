@@ -30,7 +30,7 @@ void loop() {
   if (WiFi.status() != WL_CONNECTED) server_communication_instance.wifiReconnect();
   GPS_update_data();
 
-  energy_management_instance.loop(measure_data.latitude, measure_data.longitude);
+  energy_management_instance.loop();
   
   Collect_data();
   Send_save_data(); //send data to the server

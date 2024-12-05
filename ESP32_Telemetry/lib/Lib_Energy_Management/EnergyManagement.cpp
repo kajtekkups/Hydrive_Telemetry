@@ -2,7 +2,7 @@
 
 EnergyManagement energy_management_instance;
 
-void EnergyManagement::loop(float latitude, float logitude){
+void EnergyManagement::loop(){
     // updatePosition(latitude, logitude);
     // // check if caps are full, if yes, update pwm
 
@@ -31,7 +31,7 @@ void EnergyManagement::loop(float latitude, float logitude){
 }
 
 
-void EnergyManagement::updatePwm(uint8_t acceleration_point){
+void EnergyManagement::updatePwm(uint16_t acceleration_point){
     if (acceleration_point){
         //TODO
     } else{
@@ -44,14 +44,15 @@ void EnergyManagement::updatePwm(uint8_t acceleration_point){
 }
 
 
-void EnergyManagement::updatePosition(float latitude, float logitude){
-    current_position[LATITUDE_INDEX] = latitude;
-    current_position[LONGITUDE_INDEX] = logitude;
+uint16_t EnergyManagement::updatePosition(){
+    // current_position[LATITUDE_INDEX] = measure_data.latitude;
+    // current_position[LONGITUDE_INDEX] = measure_data.longitude;
 
-    for(uint16_t i = 1; i < LAST_POINTS_NUM; ++i){
-        last_acceleration_distances[i] = last_acceleration_distances[--i];
-    }
-    last_acceleration_distances[0] = gps.distanceBetween(double(latitude), double(logitude), double(acceleration_point[LATITUDE_INDEX]), double(acceleration_point[LONGITUDE_INDEX]));
+    // for(uint16_t i = 1; i < LAST_POINTS_NUM; ++i){
+    //     last_acceleration_distances[i] = last_acceleration_distances[--i];
+    // }
+    // last_acceleration_distances[0] = 999;//gps.distanceBetween(double(latitude), double(logitude), double(acceleration_point[LATITUDE_INDEX]), double(acceleration_point[LONGITUDE_INDEX]));
+    return 0;
 }
 
 

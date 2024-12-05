@@ -5,6 +5,7 @@ TinyGPSPlus gps;
 
 void GPS_init(){
     gpsPort.begin(9600,  SERIAL_8N1, RX1, TX1);
+    Serial.println("GPS established");
 }
 
 

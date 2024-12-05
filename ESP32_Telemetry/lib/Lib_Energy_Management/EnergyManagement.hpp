@@ -15,6 +15,7 @@
 #define LAST_POINTS_NUM 3
 #define REQUIRED_DISTANCE 15.0 //m
 
+static uint16_t acceleration_point_index = 0;
 constexpr float accelerationPoints[ACCELERATION_POINTS_NUM][LIST_SIZE] = {
     {50.04401, 19.95621, 234.0} //latitude, longitude, energy
 };
@@ -44,11 +45,10 @@ struct{
 class EnergyManagement{
 
 public:
-    EnergyManagement(): acceleration_point_index(0) {};
 
-    void loop(float latitude, float logitude);
-    void updatePosition(float latitude, float logitude);
-    void updatePwm(uint8_t acceleration_point = 0);
+    void loop();
+    uint16_t updatePosition();
+    void updatePwm(uint16_t acceleration_point = 0);
 
     uint16_t drivingTimeToNextPoint();
     uint16_t estimateOverallCapRequiredEnergy();
@@ -73,7 +73,6 @@ private:
     float cap_desired_energy;
     float cap_voltage_measurement;
 
-    uint16_t acceleration_point_index;
     uint16_t control_point_index;
     
 };
