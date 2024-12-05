@@ -89,9 +89,13 @@ bool EnergyManagement::checkIfInAccelerationPoint(){
         mean_distance += last_acceleration_distances[i];
     }
     mean_distance /= float(LAST_POINTS_NUM);
-
+    Serial.println(mean_distance);
     if(mean_distance < REQUIRED_DISTANCE){
         return true;
     }
+    return false;
+}
+
+bool EnergyManagement::checkIfInControlPoint(){
     return false;
 }

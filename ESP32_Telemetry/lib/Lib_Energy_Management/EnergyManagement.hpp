@@ -17,7 +17,7 @@
 
 static uint16_t acceleration_point_index = 0;
 constexpr float accelerationPoints[ACCELERATION_POINTS_NUM][LIST_SIZE] = {
-    {50.04401, 19.95621, 234.0} //latitude, longitude, energy
+    {50.043930, 19.95648, 234.0} //latitude, longitude, energy
 };
 
 #define CONTROL_POINTS_NUM 6
@@ -45,7 +45,7 @@ struct{
 class EnergyManagement{
 
 public:
-
+    EnergyManagement();
     void loop();
     uint16_t updatePosition();
     void updatePwm(uint16_t acceleration_point = 0);
