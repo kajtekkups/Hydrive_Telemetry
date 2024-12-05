@@ -1,7 +1,6 @@
 #ifndef LIB_MICROSD_HPP
 #define LIB_MICROSD_HPP
 
-#include "FS.h"
 #include "SD.h"
 #include "SPI.h"
 #include "Pin_Defines.hpp"
@@ -9,7 +8,7 @@
 
 class SdFileSystem{
 public:
-  uint8_t begin();
+  uint8_t setup();
 
   void writeFile(const char * message);
 

@@ -10,7 +10,7 @@ const float WHEEL_CIRCUMFERENCE = 1.4444; //[m]
 class HallSensor {
 public:
     HallSensor();
-    void begin();
+    void setup();
     void loop();
 
     float current_velocity;

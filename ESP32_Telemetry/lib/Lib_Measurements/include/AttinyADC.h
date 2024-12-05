@@ -46,15 +46,15 @@ protected:
 
 public:
   bool begin(uint8_t i2c_addr, TwoWire *wire = &Wire);
-  
-  int16_t readAdcSingleEnded(uint8_t channel);
-  uint8_t choseChannel(uint8_t mux);
-  uint8_t conversionComplete();
-  int16_t getLastConversionResults(uint8_t channel);
 
   void getMessurements(int16_t& voltage, int16_t& current);
 
 private:
+  int16_t readAdcSingleEnded(uint8_t channel);
+  uint8_t choseChannel(uint8_t mux);
+  uint8_t conversionComplete();
+  int16_t getLastConversionResults(uint8_t channel);
+  
   void writeRegister(uint8_t reg, uint8_t value);
   uint16_t readRegister(uint8_t reg);
   uint8_t buffer[2];

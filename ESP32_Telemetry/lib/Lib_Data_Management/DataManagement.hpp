@@ -14,11 +14,12 @@ struct {
   float current_measurement[ADC_number];
   float velocity;
 
-  float longitude;
-  float latitude;
+  float longitude = 0.0;
+  float latitude = 0.0;
   float GPS_speed;
   float course;
 
+  uint16_t in_acceleration_point;
 } measure_data;
 
 float computeVolts(int16_t counts);

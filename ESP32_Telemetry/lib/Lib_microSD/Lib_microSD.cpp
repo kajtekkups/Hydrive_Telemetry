@@ -3,7 +3,7 @@
 
 SdFileSystem micro_sd_file;
 
-uint8_t SdFileSystem::begin(){
+uint8_t SdFileSystem::setup(){
     if(!SD.begin(0)){
       pinMode(MICROSD_STATE_LED, OUTPUT);
       digitalWrite(MICROSD_STATE_LED, HIGH);
