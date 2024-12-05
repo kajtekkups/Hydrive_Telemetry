@@ -7,20 +7,21 @@
 #include "ElecticalMeasurements.hpp"
 #include "GNSS.hpp"
 
-struct {
+struct DataStorage{
   unsigned long time;
   unsigned long measurement_time;
   float voltage_measurement[ADC_number];
   float current_measurement[ADC_number];
   float velocity;
 
-  float longitude = 0.0;
-  float latitude = 0.0;
+  float longitude;
+  float latitude;
   float GPS_speed;
   float course;
 
   uint16_t in_acceleration_point;
-} measure_data;
+};
+extern DataStorage measure_data;
 
 float computeVolts(int16_t counts);
 

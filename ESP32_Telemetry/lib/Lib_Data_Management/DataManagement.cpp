@@ -1,6 +1,8 @@
 #include "DataManagement.hpp"
 
 
+DataStorage measure_data;
+
 /**************************************************************************/
 /*!
     @brief  Converts ADC reading into volts.
