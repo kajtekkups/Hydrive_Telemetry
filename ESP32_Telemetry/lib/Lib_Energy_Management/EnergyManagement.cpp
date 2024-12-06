@@ -61,9 +61,14 @@ void EnergyManagement::loop(){
 }
 
 
-bool EnergyManagement::requestAcceleration(){
+void EnergyManagement::requestAcceleration(){
+    // alert driver
+}
+
+
+void EnergyManagement::accelerate(){
     updatePwm(1);
-    return false;
+    // accelerate
 }
 
 
@@ -129,15 +134,14 @@ uint16_t EnergyManagement::drivingTimeToNextPoint(){
 
 
 void EnergyManagement::updatePwm(uint16_t acceleration_point){
+    uint16_t pwm_width;
     if (acceleration_point){
-        // TODO SET MAXIMUM CALCULATED PWM
+        pwm_width = calculatePwmWidth(EnergyManagementConstraints.optimal_accelerate_power);
     } else{
-
-    uint16_t chargePower = estimateChargePower();
-
-    uint16_t pwm_width = calculatePwmWidth(chargePower);
-    sendPwmWidth(pwm_width);
+        uint16_t chargePower = estimateChargePower();
+        pwm_width = calculatePwmWidth(chargePower);
     }
+    sendPwmWidth(pwm_width);
 }
 
 
@@ -188,7 +192,8 @@ uint16_t EnergyManagement::calculatePwmWidth(uint16_t chargePower ){
 
 void EnergyManagement::sendPwmWidth(uint16_t pwm_width ){
     measure_data.pwm_width = pwm_width;
-    
+    // ledcWrite(mosfet_pwm_channel, pwm_width);
+
     Serial.println();
     Serial.println("fuel cell power");
     Serial.println(pwm_width);

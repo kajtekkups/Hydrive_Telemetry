@@ -51,6 +51,7 @@ struct{
     
     uint16_t fuel_cell_min_power = 180;
     uint16_t fuel_cell_max_power = 269;
+    uint16_t optimal_accelerate_power = 250;
 
     uint16_t converter_min_power;
     uint16_t converter_max_power;
@@ -75,8 +76,9 @@ public:
 
     bool checkIfInAccelerationPoint();
     bool checkIfInControlPoint();
-    bool requestAcceleration();
-    void sendAccelerationCommand();
+
+    void requestAcceleration();
+    void accelerate();
 
 
 private:
