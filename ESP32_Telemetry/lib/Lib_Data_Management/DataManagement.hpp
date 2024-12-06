@@ -20,6 +20,7 @@ struct DataStorage{
   float course;
 
   uint16_t in_acceleration_point;
+  uint16_t in_control_point;
 };
 extern DataStorage measure_data;
 
