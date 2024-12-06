@@ -21,6 +21,7 @@ struct DataStorage{
 
   uint16_t in_acceleration_point;
   uint16_t in_control_point;
+  uint16_t pwm_width;
 };
 extern DataStorage measure_data;
 

@@ -61,7 +61,10 @@ void Send_save_data(){
   String temp_high_precision_longitude = String(measure_data.longitude, 10);
   doc["longitude"] =  temp_high_precision_longitude;
 
+
   doc["in_acceleration_point"] = measure_data.in_acceleration_point;
+  doc["pwm_width"] = measure_data.pwm_width;
+
 
   doc["czas_pomiaru"] = measure_data.measurement_time;
 
