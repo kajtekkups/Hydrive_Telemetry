@@ -62,7 +62,8 @@ void Send_save_data(){
   doc["longitude"] =  temp_high_precision_longitude;
 
 
-  doc["in_acceleration_point"] = measure_data.in_acceleration_point;
+  doc["in_acceleration_point"] = measure_data.in_acceleration_point; 
+  doc["in_control_point"] = measure_data.in_control_point;
   doc["pwm_width"] = measure_data.pwm_width;
 
 

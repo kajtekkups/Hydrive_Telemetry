@@ -14,6 +14,9 @@ const int pwmResolution = 8; // Rozdzielczość PWM (8-bitowa)
 #define LONGITUDE_INDEX 1
 #define VOLTAGE_INDEX 2
 
+#define ACCELERATION_POINT 1
+#define CAPS_FULL_POINT 2
+
 
 #define LIST_SIZE 3
 
@@ -23,31 +26,42 @@ const int pwmResolution = 8; // Rozdzielczość PWM (8-bitowa)
 
 
 constexpr float accelerationPoints[][LIST_SIZE] = {
-    {51.043930, 19.95648, 48.0}, //latitude, longitude, energy [V]
-    {50.043930, 19.95648, 45.0}, //latitude, longitude, energy [V]
-    {50.043930, 19.95648, 44.0}, //latitude, longitude, energy [V]
-    {50.043930, 19.95648, 48.0}, //latitude, longitude, energy [V]
-    {50.043930, 19.95648, 40.0}, //latitude, longitude, energy [V]
+    {50.065146,	    19.9161853, 44},  //latitude, longitude, energy [V]
+    {50.0646205,	19.9183928, 44}, 
+    {50.0644019,	19.9196652, 44}, 
+
 };
 constexpr uint16_t acceleration_points_num = sizeof(accelerationPoints)/sizeof(accelerationPoints[0]);
 static uint16_t acceleration_point_index = 0;
 
 
 constexpr float controlPoints[][LIST_SIZE] = {
-    {50.043930, 19.95648, 15.0}, //szerokość(latitude), wysokość(longitude), time to the next point
-    {50.043930, 19.95648, 40.0}, //latitude, longitude
-    {50.043930, 19.95648, 10.0}, //latitude, longitude 
-    {50.043930, 19.95648, 100.0}, //latitude, longitude
-    {50.043930, 19.95648, 25.0}, //latitude, longitude
-    {50.043930, 19.95648, 15.0}, //latitude, longitude
+    {50.0655481,	19.9145114, 30}, //szerokość(latitude), wysokość(longitude), time to the next point
+    {50.0654103,	19.9150639, 20},
+    {50.0652915,	19.9155762, 10},
+    {50.0650045,	19.9167623, 30},
+    {50.0648874,	19.9172612, 20},
+    {50.0647532,	19.9178424, 10},
+    {50.0644964,	19.9190058, 10}
 };
 static const uint16_t time_position = 2;
 constexpr uint16_t control_points_num = sizeof(controlPoints)/sizeof(controlPoints[0]);
 static uint16_t control_point_index = 0;
 
+// simulation charger
+constexpr float simulation_charge_state[] = {40.0,
+                                            41.5,
+                                            43.0,
+                                            42.0,
+                                            42.9,
+                                            44.0,   
+                                            41.0,
+};
+
+
 struct{
     float min_cap_constraint;
-    float max_cap_constraint;
+    float max_cap_constraint = 44.0;
     
     uint16_t fuel_cell_min_power = 180;
     uint16_t fuel_cell_max_power = 269;

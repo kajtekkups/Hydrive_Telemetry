@@ -13,25 +13,28 @@ EnergyManagement::EnergyManagement(){
 
     ledcSetup(mosfet_pwm_channel, pwmFreq, pwmResolution);
     ledcAttachPin(CAPACITOR_MOSFET_PWM, mosfet_pwm_channel);
+    ledcWrite(mosfet_pwm_channel, 125);
 }
 
 
 void EnergyManagement::loop(){
     updatePosition();
     // // check if caps are full, if yes, update pwm
-    if(measure_data.voltage_measurement[ADS_ADRESS_BEHIND_CELL] >= EnergyManagementConstraints.max_cap_constraint){
-        //TODO
-    }
+    // if(simulation_charge_state[control_point_index] >= EnergyManagementConstraints.max_cap_constraint){
+    //     updatePwm(CAPS_FULL_POINT);
+    // }
 
     if(checkIfInAccelerationPoint()){
         requestAcceleration();
-        
-        measure_data.in_acceleration_point = 1;
+        updatePwm(ACCELERATION_POINT);
+
+        measure_data.in_acceleration_point = acceleration_point_index+1;
 
         acceleration_point_index++;
         if(acceleration_point_index == acceleration_points_num){
             acceleration_point_index = 0;
         }
+        
         memcpy(acceleration_point, accelerationPoints[acceleration_point_index], sizeof(accelerationPoints[acceleration_point_index]));
         
         for(uint16_t i = 0; i < LAST_POINTS_NUM; ++i){
@@ -39,25 +42,25 @@ void EnergyManagement::loop(){
         }
 
     }else if(checkIfInControlPoint()){
-        measure_data.in_control_point = 1;
+        measure_data.in_control_point = control_point_index+1;
+
+        updatePwm();
+
         control_point_index++;
         if(control_point_index == control_points_num){
             control_point_index = 0;
         }
+
         memcpy(control_point, controlPoints[control_point_index], sizeof(controlPoints[control_point_index]));
 
         for(uint16_t i = 0; i < LAST_POINTS_NUM; ++i){
             last_control_distances[i] = MAX_DISTANCE;
         }
-        updatePwm();
+        
     }else{
         measure_data.in_acceleration_point = 0;
         measure_data.in_control_point = 0;
     }
-    Serial.println();
-    Serial.println("acceleration_point_index");
-    Serial.println(acceleration_point_index);
-    Serial.println();
 }
 
 
@@ -97,11 +100,6 @@ bool EnergyManagement::checkIfInAccelerationPoint(){
     }
     mean_distance /= float(LAST_POINTS_NUM);
     
-    Serial.println();
-    Serial.println("acceleration point distance");
-    Serial.println(mean_distance);
-    Serial.println();
-
     if(mean_distance < REQUIRED_DISTANCE){
         return true;
     }
@@ -116,10 +114,6 @@ bool EnergyManagement::checkIfInControlPoint(){
     }
     mean_distance /= float(LAST_POINTS_NUM);
     
-    Serial.println();
-    Serial.println("control point distance");
-    Serial.println(mean_distance);
-    Serial.println();
 
     if(mean_distance < REQUIRED_DISTANCE){
         return true;
@@ -133,10 +127,12 @@ uint16_t EnergyManagement::drivingTimeToNextPoint(){
 }
 
 
-void EnergyManagement::updatePwm(uint16_t acceleration_point){
+void EnergyManagement::updatePwm(uint16_t special_point){
     uint16_t pwm_width;
-    if (acceleration_point){
+    if (special_point == ACCELERATION_POINT){
         pwm_width = calculatePwmWidth(EnergyManagementConstraints.optimal_accelerate_power);
+    } else if(special_point == CAPS_FULL_POINT){
+        pwm_width = calculatePwmWidth(0);
     } else{
         uint16_t chargePower = estimateChargePower();
         pwm_width = calculatePwmWidth(chargePower);
@@ -148,13 +144,13 @@ void EnergyManagement::updatePwm(uint16_t acceleration_point){
 uint16_t EnergyManagement::estimateChargePower(){
     uint16_t driving_time = drivingTimeToNextPoint();
     // float cap_voltage = measure_data.voltage_measurement[ADS_ADRESS_BEHIND_CELL];
-    float cap_voltage = 40;
+    float cap_voltage = simulation_charge_state[control_point_index];
 
     float desired_voltage = acceleration_point[VOLTAGE_INDEX];
     float differencial = desired_voltage - cap_voltage;
 
     //TODO: what if caps will discharge (doesnt make sens to charge 1V)
-    if(cap_voltage == EnergyManagementConstraints.max_cap_constraint){
+    if(cap_voltage >= EnergyManagementConstraints.max_cap_constraint){
         return 0;
     }else{
         float charge_rate = differencial/driving_time;
@@ -165,13 +161,13 @@ uint16_t EnergyManagement::estimateChargePower(){
 
 //TODO: set proper values
 uint16_t EnergyManagement::choosePower(float charge_rate){
-    if(charge_rate > 0.3){
+    if(charge_rate >= 0.3){
         return EnergyManagementConstraints.fuel_cell_max_power;
-    }else if (charge_rate > 0.2){
+    }else if (charge_rate >= 0.2){
         return EnergyManagementConstraints.fuel_cell_max_power - 20;
-    }else if (charge_rate > 0.1){
-        return EnergyManagementConstraints.fuel_cell_min_power + 20;
-    }else if (charge_rate > 0){
+    }else if (charge_rate >= 0.1){
+        return EnergyManagementConstraints.fuel_cell_min_power + 40;
+    }else if (charge_rate >= 0){
         return EnergyManagementConstraints.fuel_cell_min_power + 10;
     }else{
         return EnergyManagementConstraints.fuel_cell_min_power;
@@ -194,10 +190,6 @@ void EnergyManagement::sendPwmWidth(uint16_t pwm_width ){
     measure_data.pwm_width = pwm_width;
     // ledcWrite(mosfet_pwm_channel, pwm_width);
 
-    Serial.println();
-    Serial.println("fuel cell power");
-    Serial.println(pwm_width);
-    Serial.println();
 }
 
 
