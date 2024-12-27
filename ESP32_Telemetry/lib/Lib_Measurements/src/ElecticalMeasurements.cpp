@@ -39,7 +39,7 @@ void ElectricalMeassurements::begin(){
 float ElectricalMeassurements::calculateAmp(float Measure_VT){
 
   float normalized_measure = Measure_VT - 2.5;
-  normalized_measure = normalized_measure - MEASUREMENT_ERROR;
+  // normalized_measure = normalized_measure - MEASUREMENT_ERROR;
   
   float Amp = normalized_measure / ACS758_SENSITIVITY_DEFAULT;
 
@@ -58,8 +58,7 @@ float ElectricalMeassurements::calculateAmp(float Measure_VT){
 //Voltage divider devides in a 1/10 ratio, there is also constant 8% error 
 float ElectricalMeassurements::calculateVolt(float Measure){
   float Volt;
-  Volt = Measure * 10.0;
+  Volt = Measure * 11;
 
   return Volt;
 }
-

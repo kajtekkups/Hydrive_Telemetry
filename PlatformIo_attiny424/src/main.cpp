@@ -40,10 +40,10 @@ void init_ADC0() {
 //DO TESTOW
 //////////////////////////////////////////////////////////////////////////////////////////
     //F_CPU = 1000000UL  1 MHz / 2 = 500 kHz
-    pADC->CTRLB  = ADC_PRESC_DIV2_gc;  
+    // pADC->CTRLB  = ADC_PRESC_DIV6_gc;  
 
     //F_CPU = 1000000UL  1 MHz / 4 = 250 kHz
-    pADC->CTRLB  = ADC_PRESC_DIV4_gc;  
+    pADC->CTRLB  = ADC_PRESC_DIV6_gc;  
 //////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////
     // external voltage reference
@@ -77,7 +77,7 @@ void init_ADC0() {
     pADC->CTRLA = ADC_ENABLE_bm | ADC_LOWLAT_bm;
 
     
-    // pADC->CTRLF; number of samples and free-running mode
+    // pADC->CTRLF = ADC_SAMPNUM_ACC4_gc; //number of samples and free-running mode
 }
 
 void onReceiveFunction(int message_lenght);

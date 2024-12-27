@@ -7,7 +7,7 @@
 
 class HydrogenFlow{
 public:
-    void HydrogenFlow::setup();
+    void setup();
     float calculateFlow(uint16_t measure_volt_value);
 private:
     AttinyADC adc_module;
