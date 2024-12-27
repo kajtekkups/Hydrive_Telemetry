@@ -10,5 +10,6 @@
 
 #define ADS_VOLT 1
 #define ADS_CURRENT 0
+#define ADS_FLOW 0
 
 #endif //PIN_DEFINES_HPP

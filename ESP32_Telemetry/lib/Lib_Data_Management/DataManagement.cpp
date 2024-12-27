@@ -24,6 +24,8 @@ void DataManagement::collectData(){
   measure_data.measurement_time = millis() - measure_data.time;
 
   position_instance.GpsReadData(measure_data.GPS_speed, measure_data.latitude, measure_data.longitude);
+
+  measure_data.flow = hydrogen_flow_instance.calculateFlow();
 }
 
 
@@ -45,6 +47,8 @@ void DataManagement::saveSendData(){
   doc["latitude"] = temp_high_precision_latitude;
   String temp_high_precision_longitude = String(measure_data.longitude, 10);
   doc["longitude"] =  temp_high_precision_longitude;
+
+  doc["hydrogen_flow"] = measure_data.flow;
 
   doc["czas_pomiaru"] = measure_data.measurement_time;
 

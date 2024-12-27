@@ -1,20 +1,5 @@
-/**************************************************************************/
-/*!
-    @file     Adafruit_ADS1X15.h
-
-    This is a library for the Adafruit ADS1X15 ADC breakout boards.
-
-    Adafruit invests time and resources providing this open source code,
-    please support Adafruit and open-source hardware by purchasing
-    products from Adafruit!
-
-    Written by Kevin "KTOWN" Townsend for Adafruit Industries.
-
-    BSD license, all text here must be included in any redistribution
-*/
-/**************************************************************************/
-#ifndef __ADS1X15_H__
-#define __ADS1X15_H__
+#ifndef ATTINY_H
+#define ATTINY_H
 
 #include <Attiny_I2CDevice.h>
 #include <Arduino.h>
@@ -53,6 +38,7 @@ public:
   int16_t getLastConversionResults(uint8_t channel);
 
   void getMessurements(int16_t& voltage, int16_t& current);
+  int16_t getMessurements();
 
 private:
   void writeRegister(uint8_t reg, uint8_t value);
@@ -62,4 +48,4 @@ private:
 };
 
 
-#endif
+#endif //ATTINY_H

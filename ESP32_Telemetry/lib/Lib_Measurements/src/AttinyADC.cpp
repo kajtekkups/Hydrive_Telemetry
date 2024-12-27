@@ -108,6 +108,25 @@ void AttinyADC::getMessurements(int16_t& voltage, int16_t& current){
 
 /**************************************************************************/
 /*!
+    @brief  Gets messurements of hydrogen flow from the module
+
+    @param referenses to return value variable
+*/
+/**************************************************************************/
+int16_t AttinyADC::getMessurements(){
+  int16_t flow;
+  if(initialized){
+    flow = readAdcSingleEnded(ADS_FLOW);
+  }
+  else{
+    flow = 0;
+  }
+  return flow;
+}
+
+
+/**************************************************************************/
+/*!
     @brief  chosing pin for ADC meassurement
 
     @param channel value

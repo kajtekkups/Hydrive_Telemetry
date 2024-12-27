@@ -6,6 +6,7 @@
 #include "HallSensor.h"
 #include "ElecticalMeasurements.hpp"
 #include "Position.hpp"
+#include "HydrogenFlow.hpp"
 
 struct {
   unsigned long time;
@@ -18,6 +19,8 @@ struct {
   float latitude;
   float GPS_speed;
   float course;
+
+  float flow;
 
 } measure_data;
 

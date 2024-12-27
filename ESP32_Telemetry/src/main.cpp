@@ -5,6 +5,7 @@
 #include "Lib_microSD.hpp"
 #include "Position.hpp"
 #include "DataManagement.hpp"
+#include "HydrogenFlow.hpp"
 
 void setup() {
   
@@ -20,6 +21,8 @@ void setup() {
   position_instance.begin();
 
   hall_sensor_instance.begin();
+
+  hydrogen_flow_instance.begin();
 }
 
 void loop() {
