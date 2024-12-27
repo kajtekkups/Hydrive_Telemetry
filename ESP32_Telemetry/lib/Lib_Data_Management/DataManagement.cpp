@@ -1,22 +1,10 @@
 #include "DataManagement.hpp"
 
 
-/**************************************************************************/
-/*!
-    @brief  Converts ADC reading into volts.
-
-    @param counts the ADC reading in raw counts
-
-    @return the ADC reading in volts
-*/
-/**************************************************************************/
-float computeVolts(int16_t counts) {
-  // see data sheet Table 3
-  return ((float)counts) * (FS_RANGE / ADC_RESOLUTION);
-}
+DataManagement data_management_instance;
 
 
-void Collect_data(){
+void DataManagement::collectData(){
 
   measure_data.time = millis();
 
@@ -25,22 +13,21 @@ void Collect_data(){
 
   for(uint8_t i = 0; i < ADC_number; i++){    
     ads[i].getMessurements(voltage_value_vt, voltage_value_I);
-    float temp = computeVolts(voltage_value_vt);
-    float temp1 = computeVolts(voltage_value_I);
+    float temp = electrical_meassurements_instance.computeAdcConverterVolts(voltage_value_vt);
+    float temp1 = electrical_meassurements_instance.computeAdcConverterVolts(voltage_value_I);
     measure_data.voltage_measurement[i] = electrical_meassurements_instance.calculateVolt(temp);
     measure_data.current_measurement[i] = electrical_meassurements_instance.calculateAmp(temp1);  
   }
-  
   
   measure_data.velocity = hall_sensor_instance.current_velocity;
 
   measure_data.measurement_time = millis() - measure_data.time;
 
-  GPS_read_data(measure_data.GPS_speed, measure_data.latitude, measure_data.longitude);
+  position_instance.GpsReadData(measure_data.GPS_speed, measure_data.latitude, measure_data.longitude);
 }
 
 
-void Send_save_data(){
+void DataManagement::saveSendData(){
   // data is send in json format 
   StaticJsonDocument<400> doc; 
 

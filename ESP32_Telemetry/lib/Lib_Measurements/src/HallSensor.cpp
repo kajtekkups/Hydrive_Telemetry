@@ -7,6 +7,16 @@ unsigned long HallSensor::interrupt_time = 0;
 
 HallSensor::HallSensor() {}
 
+
+void HallSensor::begin() {
+    pinMode(VELOCITY_MEASURE_PIN_2, INPUT_PULLUP);
+    attachInterrupt(digitalPinToInterrupt(VELOCITY_MEASURE_PIN_2), addRotationSensor, RISING);
+
+    last_velocity_measure = millis();
+    measure_time = 1500;
+}
+
+
 void HallSensor::addRotationSensor() {
 
     if(millis() - interrupt_time > 30){
@@ -38,13 +48,6 @@ void HallSensor::calculateVelocity() {
     interrupts();
 }
 
-void HallSensor::begin() {
-    pinMode(VELOCITY_MEASURE_PIN_2, INPUT_PULLUP);
-    attachInterrupt(digitalPinToInterrupt(VELOCITY_MEASURE_PIN_2), addRotationSensor, RISING);
-
-    last_velocity_measure = millis();
-    measure_time = 1500;
-}
 
 void HallSensor::loop() {
     calculateVelocity();

@@ -42,6 +42,7 @@ public:
     void begin();
     float calculateAmp(float Measure);
     float calculateVolt(float Measure);
+    float computeAdcConverterVolts(int16_t counts);
 };
 
 extern ElectricalMeassurements electrical_meassurements_instance;

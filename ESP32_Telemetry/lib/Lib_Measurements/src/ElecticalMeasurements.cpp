@@ -63,3 +63,17 @@ float ElectricalMeassurements::calculateVolt(float Measure){
   return Volt;
 }
 
+
+/**************************************************************************/
+/*!
+    @brief  Converts ADC reading into volts.
+
+    @param counts the ADC reading in raw counts
+
+    @return the ADC reading in volts
+*/
+/**************************************************************************/
+float ElectricalMeassurements::computeAdcConverterVolts(int16_t counts) {
+  // see data sheet Table 3
+  return ((float)counts) * (FS_RANGE / ADC_RESOLUTION);
+}

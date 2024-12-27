@@ -5,7 +5,7 @@
 #include "MQTT_Communication.hpp"
 #include "HallSensor.h"
 #include "ElecticalMeasurements.hpp"
-#include "GNSS.hpp"
+#include "Position.hpp"
 
 struct {
   unsigned long time;
@@ -21,14 +21,15 @@ struct {
 
 } measure_data;
 
-float computeVolts(int16_t counts);
 
+class DataManagement{
+public:
+  void begin();
+  void saveSendData();    // collects data and saces it to measure_data structure
+  void collectData();     // saves and sends data from measure_data structure
+};
 
-/**** collects data and saces it to measure_data structure*****/
-void Collect_data();
-
-/**** saves and sends data from measure_data structure*****/
-void Send_save_data();
+extern DataManagement data_management_instance;
 
 
 #endif //OBSLUGA_DANYCH_HPP

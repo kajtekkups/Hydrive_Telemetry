@@ -1,19 +1,19 @@
-#include "GNSS.hpp"
+#include "Position.hpp"
 #include "Pin_Defines.hpp"
 
-TinyGPSPlus gps;
+Position position_instance;
 
-void GPS_init(){
+void Position::begin(){
     gpsPort.begin(9600,  SERIAL_8N1, RX1, TX1);
 }
 
 
-void GPS_update_data(){
+void Position::GpsUpdatePosition(){
     while (gpsPort.available() > 0)
         gps.encode(gpsPort.read());
 }
 
-void GPS_read_data(float& speed, float& latitude, float& longitude){
+void Position::GpsReadData(float& speed, float& latitude, float& longitude){
     double temp;
 
     if(gps.passedChecksum()){
